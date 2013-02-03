@@ -1,0 +1,30 @@
+log:
+  level: 1
+  path: "./"
+
+temp:
+  path: "./"
+
+# standard language to use
+# ISO 639-1 format
+language:
+  video: "en"
+  audio: "en"
+  subtitle: "en"
+
+
+# trakt.tv info
+trakt:
+  key: 'xxxx'
+  addToWatchlist: true
+  username: 'username'
+  password: 'password'
+
+
+# itunes settings
+# if addDirect is set to tru it uses applescript to add it to iTunes
+# else it moves the file to the path in path
+# Automatically Add to iTunes.localized is a folder iTunes uses to add stuff automatically from
+itunes:
+  path: '$HOME/Music/iTunes/iTunes Media/Automatically Add to iTunes.localized/'
+  addDirect: true
