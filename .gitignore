@@ -1,0 +1,6 @@
+
+config.yaml
+
+
+# Ignore Sublime Text 2 project files (HP)
+*.sublime*
