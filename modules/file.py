@@ -42,3 +42,6 @@ class File(object):
         target.close()
         os.chdir(self.path)
 
+    def removeTemp(self):
+        print self.path
+        shutil.rmtree(self.path)
