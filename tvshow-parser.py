@@ -44,15 +44,12 @@ def usage():
         print "{0:25} {1:15s}".format("--" + arg, longArgs[arg])
 
 
-def main(argv):
-    configFile = "config.yaml"
+def parseArgs(argv, config):
     try:
         opts, args = getopt.getopt(argv, str(shortArgs.keys()), longArgs.keys())
     except getopt.GetoptError:
         usage()
         sys.exit(2)
-
-    config = loadConfig(configFile)
 
     try:
         for opt, arg in opts:
@@ -76,9 +73,19 @@ def main(argv):
         print "something wrong with config..."
         sys.exit(2)
 
-    filename = "".join(args)
+    config['filename'] = "".join(args)
+
+    return config
 
 
+def main(argv):
+    configFile = "config.yaml"
+
+    config = loadConfig(configFile)
+
+    parseArgs(argv, config)
+
+    print config
 
 if __name__ == "__main__":
     main(sys.argv[1:])
