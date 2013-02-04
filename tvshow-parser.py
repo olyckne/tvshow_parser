@@ -1,6 +1,7 @@
 import sys
 import getopt
 import yaml
+from modules import file, serie
 
 shortArgs = {
     "h": "help",
@@ -100,7 +101,13 @@ def main(argv):
 
     modules = loadModules(config)
 
-    print modules
+    file_handler = file.File(config)
+
+
+    if config['type'] == "TV":
+        media_handler = serie.Serie(config)
+
+    media_handler.parseFilename()
 
 if __name__ == "__main__":
     main(sys.argv[1:])
