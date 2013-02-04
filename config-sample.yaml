@@ -13,6 +13,12 @@ language:
   subtitle: "en"
 
 
+# Which modules to use for stuff
+modules:
+  metadata: "trakt"
+  addTo: "itunes"
+  subtitle: "subliminal"
+
 # trakt.tv info
 trakt:
   key: 'xxxx'
