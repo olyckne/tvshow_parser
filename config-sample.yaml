@@ -5,6 +5,9 @@ log:
 temp:
   path: "./"
 
+# Type of media - TV/Movie
+type: "TV"
+
 # standard language to use
 # ISO 639-1 format
 language:
