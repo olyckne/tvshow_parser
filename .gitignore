@@ -1,6 +1,7 @@
 
 config.yaml
 
+*.py[cod]
 
 # Ignore Sublime Text 2 project files (HP)
 *.sublime*
