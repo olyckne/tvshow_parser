@@ -114,7 +114,16 @@ def main(argv):
     if config['type'] == "TV":
         media_handler = serie.Serie(config)
 
+    # LETS GO!
     media_handler.parseFilename()
+
+    if not file_handler.checkIfVideo():
+        print "No video, exiting!"
+        sys.exit(2)
+
+    file_handler.moveToTemp()
+
+    file_handler.removeTemp()
 
 if __name__ == "__main__":
     main(sys.argv[1:])
