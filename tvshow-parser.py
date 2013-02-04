@@ -1,6 +1,7 @@
 import sys
 import getopt
 import yaml
+import os
 from modules import file, serie
 
 shortArgs = {
