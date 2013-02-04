@@ -52,20 +52,32 @@ def main(argv):
         usage()
         sys.exit(2)
 
-    for opt, arg in opts:
-        if opt in ("-h", "--help"):
-            usage()
-            sys.exit()
-        elif opt == "-c":
-            configFile = arg
+    config = loadConfig(configFile)
+
+    try:
+        for opt, arg in opts:
+            if opt in ("-h", "--help"):
+                usage()
+                sys.exit()
+            elif opt == "-c":
+                config = loadConfig(arg)
+                if not config:
+                    print "Couldn't read config file " + str(arg)
+                    sys.exit(2)
+            elif opt == "--type":
+                config['type'] = arg
+            elif opt == "--temp-dir":
+                config['temp']["path"] = arg
+            elif opt == "--meta-module":
+                config['modules']["metadata"] = arg
+            elif opt == "--add-module":
+                config['modules']["addTo"] = arg
+    except:
+        print "something wrong with config..."
+        sys.exit(2)
 
     filename = "".join(args)
 
-    config = loadConfig(configFile)
-
-    if not config:
-        print "Couldn't read config file " + str(configFile)
-        sys.exit(2)
 
 
 if __name__ == "__main__":
