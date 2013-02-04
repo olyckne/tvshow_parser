@@ -10,10 +10,10 @@ shortArgs = {
 
 longArgs = {
     "type": "type of media - TV/Movie - Default: TV",
-    "temp-dir": "temp directory to use - Default: ./temp",
-    "meta-module": "metadata module to use - Default trakt",
-    "add-module": "add module to use - Default: itunes",
-    "sub-module": "subtitle module to use - Default: subliminal",
+    "temp-dir=": "temp directory to use - Default: ./temp",
+    "meta-module=": "metadata module to use - Default trakt",
+    "add-module=": "add module to use - Default: itunes",
+    "sub-module=": "subtitle module to use - Default: subliminal",
     "sub": "subtitle file to use - Default srt/sub with same filename as input",
     "notification-module": "notification module to use - Default: prowl",
     "season": "Set season # - Default: Parse from filename",
