@@ -97,17 +97,20 @@ def loadModules(config):
 
 
 def main(argv):
+    # Load config file
     configFile = "config.yaml"
-
     config = loadConfig(configFile)
 
+    # Parse arguments
     parseArgs(argv, config)
 
+    # Load modules for metadata, addTo and subtitle
     modules = loadModules(config)
 
+    # init file_handler
     file_handler = file.File(config)
 
-
+    # Init media_handler for the type
     if config['type'] == "TV":
         media_handler = serie.Serie(config)
 
