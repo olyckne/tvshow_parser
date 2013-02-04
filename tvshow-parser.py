@@ -74,7 +74,10 @@ def parseArgs(argv, config):
         print "something wrong with config..."
         sys.exit(2)
 
-    config['filename'] = "".join(args)
+    theFile = "".join(args)
+    config['file'] = {}
+    config['file']['path'] = os.path.dirname(theFile)
+    config['file']['name'] = os.path.basename(theFile)
 
     return config
 
