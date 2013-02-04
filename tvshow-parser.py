@@ -78,6 +78,19 @@ def parseArgs(argv, config):
     return config
 
 
+def loadModules(config):
+    res = {}
+    for module in config['modules']:
+        try:
+            exec("from modules." + module + " import " + config['modules'][module])
+            m = sys.modules['modules.metadata.' + config['modules'][module]]
+            res[module] = getattr(m, config['modules'][module].capitalize())(config)
+        except Exception as e:
+            print e
+
+    return res
+
+
 def main(argv):
     configFile = "config.yaml"
 
@@ -85,7 +98,9 @@ def main(argv):
 
     parseArgs(argv, config)
 
-    print config
+    modules = loadModules(config)
+
+    print modules
 
 if __name__ == "__main__":
     main(sys.argv[1:])
