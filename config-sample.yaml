@@ -2,9 +2,6 @@ log:
   level: 1
   path: "./"
 
-temp:
-  path: "./"
-
 # Type of media - TV/Movie
 type: "TV"
 

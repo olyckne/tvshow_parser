@@ -17,13 +17,6 @@ class File(object):
 
 
     def moveToTemp(self):
-        temp = self.config['temp']['path'] + self.config['file']['name'] + "/"
-
-        if os.path.exists(temp):
-            print "OK!"
-        else:
-            self.path = tempfile.mkdtemp()
-
         filepath = self.config['file']['path'] + "/" + self.config['file']['name']
         filesize = os.stat(filepath).st_size
         copied = 0
@@ -43,5 +36,5 @@ class File(object):
         os.chdir(self.path)
 
     def removeTemp(self):
-        print self.path
-        shutil.rmtree(self.path)
+        if self.path and os.path.exists(self.path):
+            shutil.rmtree(self.path)

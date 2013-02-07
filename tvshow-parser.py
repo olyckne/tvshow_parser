@@ -12,7 +12,6 @@ shortArgs = {
 
 longArgs = {
     "type": "type of media - TV/Movie - Default: TV",
-    "temp-dir=": "temp directory to use - Default: ./temp",
     "meta-module=": "metadata module to use - Default trakt",
     "add-module=": "add module to use - Default: itunes",
     "sub-module=": "subtitle module to use - Default: subliminal",
