@@ -11,17 +11,13 @@ class Serie(object):
         pattern = "'^(.+)\.(S?([0-9]|[0-9]){1,2})(E?([0-9]|[0-9]){1,2})(\.|-).*$'i"
         pattern = r"^(?P<name>(.*))\.(?:S)(?P<season>([0-9])*)(?:E)(?P<episode>([0-9])*)"
         matches = re.search(pattern, self.filename)
-        self.name = matches.group("name")
-        self.name = re.sub(r"[._-]", " ", self.name)
-        self.season = matches.group("season")
-        self.episode = matches.group("episode")
+        if matches:
+            self.name = matches.group("name")
+            self.name = re.sub(r"[._-]", " ", self.name)
+            self.season = matches.group("season")
+            self.episode = matches.group("episode")
 
         if re.search(r"(720|1080)p", self.filename):
             self.hd = True
         else:
             self.hd = False
-
-        print self.name
-        print self.season
-        print self.episode
-        print self.hd
