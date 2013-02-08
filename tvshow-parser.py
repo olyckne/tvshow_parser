@@ -101,13 +101,17 @@ def convert(config, modules):
 
     print config['file']
 
+    # If file isn't a video, try to find one (or more)
     if not file_handler.isVideo():
         files = file_handler.findVideo()
         for f in files['files']:
             config['file']['path'] = files['path']
             config['file']['name'] = os.path.basename(f)
+            # Call convert again with new file
             convert(config, modules)
     else:
+        # Okay, we have a file
+
         # Init media_handler for the type
         if config['type'] == "TV":
             media_handler = serie.Serie(config)
@@ -115,8 +119,17 @@ def convert(config, modules):
         # LETS GO!
         media_handler.parseFilename()
 
+        # Move file to temp folder to work with
         file_handler.moveToTemp()
 
+        # convert()
+        # getEpisodeInfo()
+        # addTags()
+        # optimize()
+        # addTo()
+        # notification()
+
+        # remove temp folder
         file_handler.removeTemp()
 
 
