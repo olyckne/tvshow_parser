@@ -95,6 +95,31 @@ def loadModules(config):
     return res
 
 
+def convert(config, modules):
+    # init file_handler
+    file_handler = file.File(config)
+
+    print config['file']
+
+    if not file_handler.isVideo():
+        files = file_handler.findVideo()
+        for f in files['files']:
+            config['file']['path'] = files['path']
+            config['file']['name'] = os.path.basename(f)
+            convert(config, modules)
+    else:
+        # Init media_handler for the type
+        if config['type'] == "TV":
+            media_handler = serie.Serie(config)
+
+        # LETS GO!
+        media_handler.parseFilename()
+
+        file_handler.moveToTemp()
+
+        file_handler.removeTemp()
+
+
 def main(argv):
     # Load config file
     configFile = "config.yaml"
@@ -106,23 +131,7 @@ def main(argv):
     # Load modules for metadata, addTo and subtitle
     modules = loadModules(config)
 
-    # init file_handler
-    file_handler = file.File(config)
-
-    # Init media_handler for the type
-    if config['type'] == "TV":
-        media_handler = serie.Serie(config)
-
-    # LETS GO!
-    media_handler.parseFilename()
-
-    if not file_handler.checkIfVideo():
-        print "No video, exiting!"
-        sys.exit(2)
-
-    file_handler.moveToTemp()
-
-    file_handler.removeTemp()
+    convert(config, modules)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
