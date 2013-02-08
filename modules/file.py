@@ -17,7 +17,14 @@ class File(object):
 
 
     def moveToTemp(self):
-        filepath = self.config['file']['path'] + "/" + self.config['file']['name']
+        self.path = tempfile.mkdtemp()
+
+        filepath = ""
+        if self.config['file']['path']:
+            filepath = self.config['file']['path'] + "/"
+
+        filepath += self.config['file']['name']
+
         filesize = os.stat(filepath).st_size
         copied = 0
         source = open(filepath, "rb")
