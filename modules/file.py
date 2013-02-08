@@ -6,14 +6,16 @@ import sys
 
 class File(object):
 
+    videoFormats = ["mkv", "avi", "mp4", "m4v"]
+
     def __init__(self, config):
         self.config = config
 
-    def checkIfVideo(self):
-        formats = ["mkv", "avi", "mp4", "m4v"]
+    def isVideo(self):
         extension = os.path.splitext(self.config['file']['name'])[1][1:]
 
-        return extension in formats
+        return extension in self.videoFormats
+
 
 
     def moveToTemp(self):
