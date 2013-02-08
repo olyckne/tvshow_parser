@@ -2,7 +2,8 @@ import os
 import tempfile
 import shutil
 import sys
-
+import zipfile
+import rarfile
 
 class File(object):
 
@@ -16,6 +17,38 @@ class File(object):
 
         return extension in self.videoFormats
 
+    def findVideo(self):
+        fullpath = self.config['file']['path'] + self.config['file']['name']
+        files = False
+        if os.path.isdir(fullpath):
+            os.chdir(fullpath)
+            files = {"path": os.getcwd(), "files": []}
+            archive = False
+            for file in os.listdir(files['path']):
+                if zipfile.is_zipfile(file):
+                    print "Unzip..."
+                    zip = zipfile.ZipFile(file)
+                    zip.extractall()
+                    archive = True
+                elif rarfile.is_rarfile(file):
+                    try:
+                        print "Unrar..."
+                        rar = rarfile.RarFile(file)
+                        rar.extractall()
+                        archive = True
+                    except rarfile.NeedFirstVolume:
+                        pass
+                self.config['file']['name'] = file
+                if self.isVideo():
+                    files['files'].append(file)
+            if archive:
+                allFiles = os.listdir(files['path'])
+                for file in allFiles:
+                    self.config['file']['name'] = file
+                    if not file in files['files'] and self.isVideo():
+                        files['files'].append(file)
+
+        return files
 
 
     def moveToTemp(self):
