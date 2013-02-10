@@ -1,7 +1,7 @@
 from add import *
 
 
-class Itunes(add):
+class Itunes(Add):
 
     def add(self):
         pass
