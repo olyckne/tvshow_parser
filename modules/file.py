@@ -5,6 +5,7 @@ import sys
 import zipfile
 import rarfile
 
+
 class File(object):
 
     videoFormats = ["mkv", "avi", "mp4", "m4v"]
@@ -50,9 +51,9 @@ class File(object):
 
         return files
 
-
     def moveToTemp(self):
         self.path = tempfile.mkdtemp()
+        self.config['temp'] = self.path
 
         filepath = ""
         if self.config['file']['path']:
@@ -75,8 +76,10 @@ class File(object):
 
         source.close()
         target.close()
-        os.chdir(self.path)
 
     def removeTemp(self):
         if self.path and os.path.exists(self.path):
             shutil.rmtree(self.path)
+
+    def cdToTemp(self):
+        os.chdir(self.path)
