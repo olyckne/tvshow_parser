@@ -64,8 +64,6 @@ def parseArgs(argv, config):
                     sys.exit(2)
             elif opt == "--type":
                 config['type'] = arg
-            elif opt == "--temp-dir":
-                config['temp']["path"] = arg
             elif opt == "--meta-module":
                 config['modules']["metadata"] = arg
             elif opt == "--add-module":
