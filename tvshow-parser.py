@@ -87,7 +87,7 @@ def loadModules(config):
     for module in config['modules']:
         try:
             exec("from modules." + module + " import " + config['modules'][module])
-            m = sys.modules['modules.metadata.' + config['modules'][module]]
+            m = sys.modules['modules.' + module + '.' + config['modules'][module]]
             res[module] = getattr(m, config['modules'][module].capitalize())(config)
         except Exception as e:
             print e
