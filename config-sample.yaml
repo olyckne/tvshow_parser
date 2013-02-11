@@ -16,7 +16,7 @@ language:
 # Which modules to use for stuff
 modules:
   metadata: "trakt"
-  addTo: "itunes"
+  add: "itunes"
   subtitle: "subliminal"
 
 # trakt.tv info
