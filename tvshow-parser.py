@@ -128,9 +128,8 @@ def convert(config, modules):
         # optimize()
         # addTo()
         # notification()
-
-        # remove temp folder
-        file_handler.removeTemp()
+        if modules['add'].add(os.path.join(config['temp']['path'], config['temp']['file'])):
+            file_handler.removeTemp()
 
 
 def main(argv):
