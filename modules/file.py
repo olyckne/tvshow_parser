@@ -53,7 +53,10 @@ class File(object):
 
     def moveToTemp(self):
         self.path = tempfile.mkdtemp()
-        self.config['temp'] = self.path
+        self.config['temp'] = {
+            "path": self.path,
+            "file": os.path.splitext(self.config['file']['name'])[0] + ".m4v"
+        }
 
         filepath = ""
         if self.config['file']['path']:
