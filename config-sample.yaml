@@ -32,5 +32,5 @@ trakt:
 # else it moves the file to the path in path
 # Automatically Add to iTunes.localized is a folder iTunes uses to add stuff automatically from
 itunes:
-  path: '$HOME/Music/iTunes/iTunes Media/Automatically Add to iTunes.localized/'
+  path: '~/Music/iTunes/iTunes Media/Automatically Add to iTunes.localized/'
   addDirect: true
