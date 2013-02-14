@@ -18,6 +18,7 @@ modules:
   metadata: "trakt"
   add: "itunes"
   subtitle: "subliminal"
+  notification: "growl"
 
 # trakt.tv info
 trakt:
@@ -34,3 +35,4 @@ trakt:
 itunes:
   path: '~/Music/iTunes/iTunes Media/Automatically Add to iTunes.localized/'
   addDirect: true
+
