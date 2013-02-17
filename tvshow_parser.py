@@ -5,7 +5,7 @@ import os
 from modules import file, serie
 
 
-__app_name__ = "tvshow-parser"
+__app_name__ = "tvshow_parser"
 __version__ = 0.5
 
 shortArgs = {
