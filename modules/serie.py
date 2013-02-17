@@ -23,8 +23,8 @@ class Serie(object):
         if matches:
             self.name = matches.group("name")
             self.name = re.sub(r"[._-]", " ", self.name)
-            self.season = matches.group("season")
-            self.episode = matches.group("episode")
+            self.season = matches.group("season").lstrip("0")
+            self.episode = matches.group("episode").lstrip("0")
         else:
             self.name = self.filename
             self.season = 0
