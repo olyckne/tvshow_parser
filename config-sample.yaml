@@ -10,7 +10,7 @@ type: "TV"
 language:
   video: "en"
   audio: "en"
-  subtitle: "en"
+  subtitle: ["en"]
 
 
 # Which modules to use for stuff
