@@ -13,3 +13,12 @@ class Growl(Notification, gntp.notifier.GrowlNotifier):
              defaultNotifications = ["Parsing done"],
             )
         self.register()
+
+    def sendNotification(self, type="Parsing done", title="Parsing done", description=""):
+        self.notify(
+            noteType="Parsing done",
+            title=title,
+            description=description,
+            sticky=False,
+            priority=2
+            )
