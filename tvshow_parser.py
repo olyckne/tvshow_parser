@@ -126,8 +126,7 @@ def convert(config, modules):
         # Move file to temp folder to work with
 #        file_handler.moveToTemp()
 
-        print modules['notification']
-        modules['notification'].sendNotification(config['file']['name'])
+#        modules['notification'].sendNotification(description=config['file']['name'])
         # convert()
         # getEpisodeInfo()
         # addTags()
