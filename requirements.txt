@@ -2,3 +2,4 @@ pyYaml==3.10
 rarfile==2.5
 subliminal==0.6.3
 gntp==0.9
+httplib2==0.7.7
