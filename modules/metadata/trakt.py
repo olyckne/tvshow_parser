@@ -11,6 +11,10 @@ class Trakt(Metadata):
     }
 
     def __init__(self, config):
+        if not "trakt" in config:
+            raise Exception("Need trakt config key, username sha1 of password")
+
+        self.trakt = config['trakt']
         super(Trakt, self).__init__(config)
 
     def getEpisodeInfo(self, serie, season, episode):
