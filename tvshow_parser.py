@@ -4,6 +4,10 @@ import yaml
 import os
 from modules import file, serie
 
+
+__app_name__ = "tvshow-parser"
+__version__ = 0.5
+
 shortArgs = {
     "h": "help",
     "c:": "config file",
@@ -120,16 +124,18 @@ def convert(config, modules):
         media_handler.parseFilename()
 
         # Move file to temp folder to work with
-        file_handler.moveToTemp()
+#        file_handler.moveToTemp()
 
+        print modules['notification']
+        modules['notification'].sendNotification(config['file']['name'])
         # convert()
         # getEpisodeInfo()
         # addTags()
         # optimize()
         # addTo()
         # notification()
-        if modules['add'].add(os.path.join(config['temp']['path'], config['temp']['file'])):
-            file_handler.removeTemp()
+#        if modules['add'].add(os.path.join(config['temp']['path'], config['temp']['file'])):
+#            file_handler.removeTemp()
 
 
 def main(argv):
@@ -143,6 +149,7 @@ def main(argv):
     # Load modules for metadata, addTo and subtitle
     modules = loadModules(config)
 
+    print modules
     convert(config, modules)
 
 if __name__ == "__main__":
