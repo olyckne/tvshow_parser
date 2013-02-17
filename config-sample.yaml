@@ -17,7 +17,7 @@ language:
 modules:
   metadata: "trakt"
   add: "itunes"
-  subtitle: "subliminal"
+  subtitle: "subtitle"
   notification: "growl"
 
 # trakt.tv info
