@@ -25,7 +25,7 @@ trakt:
   key: 'xxxx'
   addToWatchlist: false
   username: 'username'
-  password: 'password'
+  password: 'password' # This needs to be a sha1 of your trakt.tv password!
 
 
 # itunes settings
