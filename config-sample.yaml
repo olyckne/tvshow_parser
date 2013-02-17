@@ -23,7 +23,7 @@ modules:
 # trakt.tv info
 trakt:
   key: 'xxxx'
-  addToWatchlist: true
+  addToWatchlist: false
   username: 'username'
   password: 'password'
 
