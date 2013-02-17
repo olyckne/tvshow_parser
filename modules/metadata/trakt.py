@@ -22,3 +22,10 @@ class Trakt(Metadata):
 
     def getArtwork(serie, season):
         pass
+
+    def constructUrl(self, type, params):
+        url = self.url[type] + self.trakt['key'] + "/"
+        for param in params:
+            url += param + "/"
+
+        return url.replace(" ", "-")
