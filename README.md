@@ -3,8 +3,16 @@ tvshow-parser
 
 Parses TV Shows. Mainly for converting to iTunes friendly format, adding metadata, subtitle and adding to iTunes
 
-
 ## NOT WORKING YET!
+
+### Setup
+
+- Download (d'oh!)
+- cd to directory
+- `pip install -r requirements.txt`
+- `cp config-sample.yaml config.yaml` and edit it to your liking.
+- basic usage: `python tvshow_parser.py filename`
+
 
 ### Short story: 
 Rewriting a tv show parser I wrote in php to python
