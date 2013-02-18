@@ -59,11 +59,28 @@ class Trakt(Metadata):
             print "no data"
         print url
 
-        print serie
         return serie
 
-    def getArtwork(serie, season):
-        pass
+    def getArtwork(self, serie, season):
+        name = serie['name'] if "name" in serie else serie
+        url = self.constructUrl("season", [name, season])
+        print url
+        image = False
+        cacheDir = self.config['temp']['path'] + "/.cache" if "temp" in self.config else ".cache"
+        h = httplib2.Http(cacheDir)
+        resp, content = h.request(url, "GET")
+        content = json.loads(content)
+        if not "status" in content:
+            for s in content:
+                if int(s['season']) == int(season):
+                    image = s['images']['poster']
+
+        if image:
+            resp, content = h.request(image, "GET")
+            if "status" in resp and resp['status'] == '200':
+                print "downloading artwork"
+                with open("art.jpg", "wb") as f:
+                    f.write(content)
 
     def constructUrl(self, type, params):
         url = self.url[type] + self.trakt['key'] + "/"
