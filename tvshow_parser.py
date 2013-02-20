@@ -67,7 +67,7 @@ def parseArgs(argv, config):
                     print "Couldn't read config file " + str(arg)
                     sys.exit(2)
             elif opt == "--type":
-                config['type'] = arg
+                config['type'] = arg.upper()
             elif opt == "--sub":
                 config['sub'] = arg
             elif opt == "--meta-module":
