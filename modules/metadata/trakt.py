@@ -21,6 +21,11 @@ class Trakt(Metadata):
         super(Trakt, self).__init__(config)
 
     def getEpisodeInfo(self, name, season, episode):
+    def getInfo(self, data):
+        if self.config['type'] == "TV":
+            return self.getEpisodeInfo(data)
+        elif self.config['type'] == "MOVIE":
+            pass
         serie = {
             "name": name,
             "season": season,
