@@ -20,12 +20,19 @@ class Trakt(Metadata):
         self.trakt = config['trakt']
         super(Trakt, self).__init__(config)
 
-    def getEpisodeInfo(self, name, season, episode):
+
     def getInfo(self, data):
         if self.config['type'] == "TV":
             return self.getEpisodeInfo(data)
         elif self.config['type'] == "MOVIE":
             pass
+
+    def getEpisodeInfo(self, name, season=0, episode=0):
+        if type(name) is type({}) or type(name) is type([]):
+            season = name['season'] if "season" in name else name[1]
+            episode = name['episode'] if "episode" in name else name[2]
+            name = name['name'] if "name" in name else name[0]
+
         serie = {
             "name": name,
             "season": season,
