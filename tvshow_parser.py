@@ -28,27 +28,6 @@ longArgs = {
 }
 
 
-def loadConfig(file):
-    try:
-        f = open(file)
-        config = yaml.load(f)
-        f.close()
-    except IOError:
-        return False
-
-    return config
-
-
-def usage():
-    print "tvshow-parser"
-
-    for arg in shortArgs:
-        print "{0:25} {1:15s}".format("-" + arg.replace(":", ""), shortArgs[arg])
-
-    for arg in longArgs:
-        print "{0:25} {1:15s}".format("--" + arg, longArgs[arg])
-
-
 def parseArgs(argv, config):
     try:
         opts, args = getopt.getopt(argv, str(shortArgs.keys()), longArgs.keys())
@@ -68,12 +47,17 @@ def parseArgs(argv, config):
                     sys.exit(2)
             elif opt == "--type":
                 config['type'] = arg.upper()
-            elif opt == "--sub":
-                config['sub'] = arg
             elif opt == "--meta-module":
                 config['modules']["metadata"] = arg
             elif opt == "--add-module":
                 config['modules']["addTo"] = arg
+            elif opt == "--sub-module":
+                config['modules']['subtitle'] = arg
+            elif opt == "--sub":
+                config['sub'] = arg
+            elif opt == "sendNotification":
+                config['modules']['notification'] = arg
+
     except:
         print "something wrong with config..."
         sys.exit(2)
@@ -84,6 +68,27 @@ def parseArgs(argv, config):
     config['file']['name'] = os.path.basename(theFile)
 
     return config
+
+
+def loadConfig(file):
+    try:
+        f = open(file)
+        config = yaml.load(f)
+        f.close()
+    except IOError:
+        return False
+
+    return config
+
+
+def usage():
+    print "tvshow-parser"
+
+    for arg in shortArgs:
+        print "{0:25} {1:15s}".format("-" + arg.replace(":", ""), shortArgs[arg])
+
+    for arg in longArgs:
+        print "{0:25} {1:15s}".format("--" + arg, longArgs[arg])
 
 
 def loadModules(config):
