@@ -24,7 +24,6 @@ longArgs = {
     "season": "Set season # - Default: Parse from filename",
     "episode": "Set episode # - Default: Parse from filename",
     "name": "Set name - Default: Parse from filename",
-    "year": "Set year - Default: Parse from filename"
 }
 
 
@@ -57,6 +56,12 @@ def parseArgs(argv, config):
                 config['sub'] = arg
             elif opt == "sendNotification":
                 config['modules']['notification'] = arg
+            elif opt == "season":
+                config['file']['metadata']['season'] = arg
+            elif opt == "episode":
+                config['file']['metadata']['episode'] = arg
+            elif opt == "name":
+                config['file']['metadata']['name'] = arg
 
     except:
         print "something wrong with config..."
