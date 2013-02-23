@@ -13,17 +13,16 @@ shortArgs = {
     "c:": "config file",
     "d:": "debug level",
 }
-
 longArgs = {
-    "type": "type of media - TV/Movie - Default: TV",
+    "type=": "type of media - TV/Movie - Default: TV",
     "meta-module=": "metadata module to use - Default trakt",
     "add-module=": "add module to use - Default: itunes",
     "sub-module=": "subtitle module to use - Default: subliminal",
-    "sub": "subtitle file to use - Default srt/sub with same filename as input",
-    "notification-module": "notification module to use - Default: prowl",
-    "season": "Set season # - Default: Parse from filename",
-    "episode": "Set episode # - Default: Parse from filename",
-    "name": "Set name - Default: Parse from filename",
+    "sub=": "subtitle file to use - Default srt/sub with same filename as input",
+    "notification-module=": "notification module to use - Default: prowl",
+    "season=": "Set season # - Default: Parse from filename",
+    "episode=": "Set episode # - Default: Parse from filename",
+    "name=": "Set name - Default: Parse from filename",
 }
 
 
@@ -33,6 +32,8 @@ def parseArgs(argv, config):
     except getopt.GetoptError:
         usage()
         sys.exit(2)
+
+    config['file'] = {'metadata': {}}
 
     try:
         for opt, arg in opts:
@@ -56,19 +57,18 @@ def parseArgs(argv, config):
                 config['sub'] = arg
             elif opt == "sendNotification":
                 config['modules']['notification'] = arg
-            elif opt == "season":
+            elif opt == "--season":
+                print "season\n"
                 config['file']['metadata']['season'] = arg
-            elif opt == "episode":
+            elif opt == "--episode":
                 config['file']['metadata']['episode'] = arg
-            elif opt == "name":
+            elif opt == "--name":
                 config['file']['metadata']['name'] = arg
-
     except:
         print "something wrong with config..."
         sys.exit(2)
 
     theFile = "".join(args)
-    config['file'] = {}
     config['file']['path'] = os.path.dirname(theFile)
     config['file']['name'] = os.path.basename(theFile)
 
