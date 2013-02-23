@@ -34,14 +34,16 @@ class Serie(object):
             self.season = 0
             self.episode = 0
 
+        if re.search(r"(720|1080)p", self.filename):
+            self.hd = True
+        else:
+            self.hd = False
+
         # Check if user passed args to use for metadata
         if "metadata" in self.config['file']:
             metadata = self.config['file']['metadata']
             self.name = metadata['name'] if 'name' in metadata else self.name
             self.season = metadata['season'] if 'season' in metadata else self.season
             self.episode = metadata['episode'] if 'episode' in metadata else self.episode
-
-        if re.search(r"(720|1080)p", self.filename):
-            self.hd = True
-        else:
-            self.hd = False
+            if "hd" in metadata:
+                self.hd = True if metadata["hd"].lower() in ["true", "1", "yes"] else False
