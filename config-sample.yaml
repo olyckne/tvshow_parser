@@ -19,6 +19,7 @@ modules:
   add: "itunes"
   subtitle: "subtitle"
   notification: "growl"
+  convert: "ffmpeg"
 
 # trakt.tv info
 trakt:
