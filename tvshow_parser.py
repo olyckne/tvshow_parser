@@ -137,17 +137,21 @@ def convert(config, modules):
         media_handler.parseFilename()
 
         # Move file to temp folder to work with
-#        file_handler.moveToTemp()
+        file_handler.moveToTemp()
 
-#        modules['notification'].sendNotification(description=config['file']['name'])
+        data = modules['metadata'].getInfo({
+                                            "name": media_handler.name,
+                                            "season": media_handler.season,
+                                            "episode": media_handler.episode
+                                            })
+        print data
+        modules['metadata'].getArtwork(media_handler.name, media_handler.season)
         # convert()
-        # getEpisodeInfo()
         # addTags()
         # optimize()
-        # addTo()
-        # notification()
 #        if modules['add'].add(os.path.join(config['temp']['path'], config['temp']['file'])):
-#            file_handler.removeTemp()
+        file_handler.removeTemp()
+        modules['notification'].sendNotification(description=config['file']['name'])
 
 
 def main(argv):
@@ -161,7 +165,6 @@ def main(argv):
     # Load modules for metadata, addTo and subtitle
     modules = loadModules(config)
 
-    print modules
     convert(config, modules)
 
 if __name__ == "__main__":
