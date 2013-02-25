@@ -138,6 +138,7 @@ def convert(config, modules):
 
         # Move file to temp folder to work with
         file_handler.moveToTemp()
+        file_handler.cdToTemp()
 
         data = modules['metadata'].getInfo({
                                             "name": media_handler.name,
