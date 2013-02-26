@@ -15,7 +15,7 @@ class Ffmpeg(Convert):
         if not self.__ffmpeg__:
             raise Exception("ffmpeg not found?! Exiting")
             sys.exit(1)
-
+        self.type = {}
         super(Ffmpeg, self).__init__(config)
 
     def convert(self):
@@ -28,10 +28,9 @@ class Ffmpeg(Convert):
             file = os.path.join(file['path'], self.config['file']['name'])
 
         print "extracting audio..."
-        audio = self.getMediaType("audio")
+        self.type['audio'] = self.getMediaType("audio")
 
-        print audio
-        cmd = self.__ffmpeg__ + " -i " + file + " -dn -acodec copy audio." + audio if audio else "ac3"
+        cmd = self.__ffmpeg__ + " -i " + file + " -dn -acodec copy audio." + self.type['audio'] if self.type['audio'] else "ac3"
         out, err = self.__exec__(cmd)
 
         print out, err
@@ -42,10 +41,9 @@ class Ffmpeg(Convert):
             file = os.path.join(file['path'], self.config['file']['name'])
 
         print "extracting video..."
-        value = self.getMediaType("video")
+        self.type['video'] = self.getMediaType("video")
 
-        print value
-        cmd = self.__ffmpeg__ + " -i " + file + " -an -vcodec copy video." + value if value else "h264"
+        cmd = self.__ffmpeg__ + " -i " + file + " -an -vcodec copy video." + self.type['video'] if self.type['video'] else "h264"
         out, err = self.__exec__(cmd)
         print out, err
 
