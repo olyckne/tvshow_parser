@@ -1,4 +1,5 @@
 import abc
+from subprocess import Popen, PIPE
 
 
 class Convert(object):
@@ -10,3 +11,8 @@ class Convert(object):
     @abc.abstractmethod
     def convert(self):
         pass
+
+    def __exec__(self, cmd):
+        p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE)
+
+        return p.communicate()
