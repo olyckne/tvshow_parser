@@ -19,7 +19,9 @@ class Ffmpeg(Convert):
         super(Ffmpeg, self).__init__(config)
 
     def convert(self):
-        pass
+        self.extractAudio()
+        self.extractVideo()
+
     def extractAudio(self, file=False):
         if not file:
             file = self.config['temp'] if "temp" in self.config else self.config['file']
