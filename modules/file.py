@@ -55,7 +55,7 @@ class File(object):
         self.path = tempfile.mkdtemp()
         self.config['temp'] = {
             "path": self.path,
-            "file": os.path.splitext(self.config['file']['name'])[0] + ".m4v"
+            "name": os.path.splitext(self.config['file']['name'])[0] + ".m4v"
         }
 
         filepath = ""
