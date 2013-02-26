@@ -20,6 +20,19 @@ class Ffmpeg(Convert):
 
     def convert(self):
         pass
+    def extractAudio(self, file=False):
+        if not file:
+            file = self.config['temp'] if "temp" in self.config else self.config['file']
+            file = os.path.join(file['path'], file['name'])
+
+        print "extracting audio..."
+        audio = self.getMediaType("audio")
+
+        print audio
+        cmd = self.__ffmpeg__ + " -i " + file + " -dn -acodec copy audio." + audio if audio else "ac3"
+        out, err = self.__exec__(cmd)
+
+        print out, err
     def getMediaType(self, type, file=False):
         type = type.title()
         if not file:
