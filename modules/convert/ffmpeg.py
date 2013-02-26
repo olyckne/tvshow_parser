@@ -25,7 +25,7 @@ class Ffmpeg(Convert):
     def extractAudio(self, file=False):
         if not file:
             file = self.config['temp'] if "temp" in self.config else self.config['file']
-            file = os.path.join(file['path'], file['name'])
+            file = os.path.join(file['path'], self.config['file']['name'])
 
         print "extracting audio..."
         audio = self.getMediaType("audio")
@@ -39,7 +39,7 @@ class Ffmpeg(Convert):
     def extractVideo(self, file=False):
         if not file:
             file = self.config['temp'] if "temp" in self.config else self.config['file']
-            file = os.path.join(file['path'], file['name'])
+            file = os.path.join(file['path'], self.config['file']['name'])
 
         print "extracting video..."
         value = self.getMediaType("video")
@@ -53,7 +53,7 @@ class Ffmpeg(Convert):
         type = type.title()
         if not file:
             file = self.config['temp'] if "temp" in self.config else self.config['file']
-            file = os.path.join(file['path'], file['name'])
+            file = os.path.join(file['path'], self.config['file']['name'])
 
         out, err = self.__exec__(self.__ffmpeg__ + " -i " + file)
 
