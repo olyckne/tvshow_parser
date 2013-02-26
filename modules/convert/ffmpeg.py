@@ -33,6 +33,20 @@ class Ffmpeg(Convert):
         out, err = self.__exec__(cmd)
 
         print out, err
+
+    def extractVideo(self, file=False):
+        if not file:
+            file = self.config['temp'] if "temp" in self.config else self.config['file']
+            file = os.path.join(file['path'], file['name'])
+
+        print "extracting video..."
+        value = self.getMediaType("video")
+
+        print value
+        cmd = self.__ffmpeg__ + " -i " + file + " -an -vcodec copy video." + value if value else "h264"
+        out, err = self.__exec__(cmd)
+        print out, err
+
     def getMediaType(self, type, file=False):
         type = type.title()
         if not file:
