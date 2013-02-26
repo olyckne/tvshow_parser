@@ -147,6 +147,7 @@ def convert(config, modules):
                                             })
         print data
         modules['metadata'].getArtwork(media_handler.name, media_handler.season)
+        modules['convert'].convert()
         # convert()
         # addTags()
         # optimize()
