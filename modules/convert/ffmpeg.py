@@ -21,6 +21,8 @@ class Ffmpeg(Convert):
     def convert(self):
         self.extractAudio()
         self.extractVideo()
+        if not self.type['audio'] == "m4a":
+            self.convertAudio(to='m4a')
 
     def extractAudio(self, file=False):
         if not file:
@@ -62,3 +64,15 @@ class Ffmpeg(Convert):
         if matches and "type" in matches.groupdict():
             return matches.group("type")
         return False
+
+    def convertAudio(self, file=False, to='m4a'):
+        codec = "libfdk_aac" if to == "m4a" else to
+        if not file:
+            file = self.config['temp'] if "temp" in self.config else self.config['file']
+            file = os.path.join(file['path'], 'audio*')
+        print file
+        out, err = self.__exec__(self.__ffmpeg__ + " -i " + file + " -acodec " + codec + " -b:a 384k audio." + to)
+
+        print out, err
+
+
