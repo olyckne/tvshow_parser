@@ -1,5 +1,6 @@
 from convert import *
 import os
+import re
 
 
 class Ffmpeg(Convert):
@@ -19,3 +20,18 @@ class Ffmpeg(Convert):
 
     def convert(self):
         pass
+    def getMediaType(self, type, file=False):
+        type = type.title()
+        if not file:
+            file = self.config['temp'] if "temp" in self.config else self.config['file']
+            file = os.path.join(file['path'], file['name'])
+
+        out, err = self.__exec__(self.__ffmpeg__ + " -i " + file)
+
+        value = out if out else err
+        pattern = r"( )*(Stream) (#[0-9]:[0-9](\(.*\))?:) (" + type + ":) (?P<type>([A-Za-z0-9])*)"
+        matches = re.search(pattern, value)
+
+        if matches and "type" in matches.groupdict():
+            return matches.group("type")
+        return False
