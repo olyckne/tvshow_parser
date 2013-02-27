@@ -1,4 +1,5 @@
 import abc
+import httplib2
 
 
 class Metadata(object):
@@ -15,3 +16,9 @@ class Metadata(object):
     @abc.abstractmethod
     def getArtwork(self, serie, season):
         return False
+
+    def httprequest(self, url, type="GET", data={}):
+        cacheDir = self.config['temp']['path'] + "/.cache" if "temp" in self.config else ".cache"
+        h = httplib2.Http(cacheDir)
+
+        return h.request(url, type)
