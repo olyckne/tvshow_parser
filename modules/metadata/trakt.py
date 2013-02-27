@@ -1,5 +1,4 @@
 from metadata import *
-import httplib2
 import json
 import datetime
 
@@ -20,7 +19,6 @@ class Trakt(Metadata):
         self.trakt = config['trakt']
         super(Trakt, self).__init__(config)
 
-
     def getInfo(self, data):
         if self.config['type'] == "TV":
             return self.getEpisodeInfo(data)
@@ -40,9 +38,7 @@ class Trakt(Metadata):
         }
 
         url = self.constructUrl("episode", [name, season, episode])
-        cacheDir = self.config['temp']['path'] + "/.cache" if "temp" in self.config else ".cache"
-        h = httplib2.Http(cacheDir)
-        resp, content = h.request(url, "GET")
+        resp, content = self.httprequest(url, "GET")
         content = json.loads(content)
         if not "status" in content:
             show = content['show']
@@ -59,7 +55,7 @@ class Trakt(Metadata):
             serie['id'] = episode['tvdb_id']
 
             url = self.constructUrl("season", [name])
-            resp, content = h.request(url, "GET")
+            resp, content = self.httprequest(url, "GET")
             content = json.loads(content)
 
             if not "status" in content:
@@ -78,9 +74,7 @@ class Trakt(Metadata):
         url = self.constructUrl("season", [name, season])
         print url
         image = False
-        cacheDir = self.config['temp']['path'] + "/.cache" if "temp" in self.config else ".cache"
-        h = httplib2.Http(cacheDir)
-        resp, content = h.request(url, "GET")
+        resp, content = self.httprequest(url, "GET")
         content = json.loads(content)
         if not "status" in content:
             for s in content:
@@ -88,7 +82,7 @@ class Trakt(Metadata):
                     image = s['images']['poster']
 
         if image:
-            resp, content = h.request(image, "GET")
+            resp, content = self.httprequest(image, "GET")
             if "status" in resp and resp['status'] == '200':
                 print "downloading artwork"
                 with open("art.jpg", "wb") as f:
