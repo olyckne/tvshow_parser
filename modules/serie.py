@@ -7,7 +7,11 @@ class Serie(object):
 
     def parseFilename(self, filename=False):
         if not filename:
-            self.filename = self.config['file']['name']
+            if "metadata" in self.config['file'] and \
+            "filename" in self.config['file']['metadata']:
+                self.filename = self.config['file']['metadata']['filename']
+            else:
+                self.filename = self.config['file']['name']
 #        pattern = "'^(.+)\.(S?([0-9]|[0-9]){1,2})(E?([0-9]|[0-9]){1,2})(\.|-).*$'i"
 #
 #        #
