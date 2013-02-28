@@ -23,7 +23,8 @@ longArgs = {
     "season=": "Set season # - Default: Parse from filename",
     "episode=": "Set episode # - Default: Parse from filename",
     "name=": "Set name - Default: Parse from filename",
-    "hd=": "Set HD quality: True/False - Default: Parse from filename"
+    "hd=": "Set HD quality: True/False - Default: Parse from filename",
+    "filename=": "Use this string for parsing info instead of actual filename"
 }
 
 
@@ -66,6 +67,8 @@ def parseArgs(argv, config):
                 config['file']['metadata']['name'] = arg
             elif opt == "--hd":
                 config['file']['metadata']['hd'] = arg
+            elif opt == "--filename":
+                config['file']['metadata']['filename'] = arg
 
     except:
         print "something wrong with config..."
