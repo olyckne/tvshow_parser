@@ -19,10 +19,10 @@ class Ffmpeg(Convert):
         super(Ffmpeg, self).__init__(config)
 
     def convert(self):
-        self.extractAudio()
-        self.extractVideo()
-        if not self.type['audio'] == "m4a":
-            self.convertAudio(to='m4a')
+        origVideo = self.extractVideo()
+        origAudio = self.extractAudio()
+#        if not self.type['audio'] == "m4a":
+#            newAudio = self.convertAudio(to='m4a')
 
     def extractAudio(self, file=False):
         if not file:
@@ -32,10 +32,12 @@ class Ffmpeg(Convert):
         print "extracting audio..."
         self.type['audio'] = self.getMediaType("audio")
 
-        cmd = self.__ffmpeg__ + " -i " + file + " -dn -acodec copy audio." + self.type['audio'] if self.type['audio'] else "ac3"
+        outFile = "audio." + self.type['audio'] if self.type['audio'] else "ac3"
+        cmd = self.__ffmpeg__ + " -i " + file + " -dn -acodec copy " + outFile
         out, err = self.__exec__(cmd)
 
         print out, err
+        return outFile
 
     def extractVideo(self, file=False):
         if not file:
@@ -45,9 +47,14 @@ class Ffmpeg(Convert):
         print "extracting video..."
         self.type['video'] = self.getMediaType("video")
 
-        cmd = self.__ffmpeg__ + " -i " + file + " -an -vcodec copy video." + self.type['video'] if self.type['video'] else "h264"
+        self.type['video'] = self.type['video'] if not self.type['video'] == "h264" else "m4v"
+
+        outFile = "video." + self.type['video'] if self.type['video'] else "m4v"
+        cmd = self.__ffmpeg__ + " -i " + file + " -an -vcodec copy " + outFile
         out, err = self.__exec__(cmd)
         print out, err
+
+        return outFile
 
     def getMediaType(self, type, file=False):
         type = type.title()
@@ -71,7 +78,13 @@ class Ffmpeg(Convert):
             file = self.config['temp'] if "temp" in self.config else self.config['file']
             file = os.path.join(file['path'], 'audio*')
         print file
-        out, err = self.__exec__(self.__ffmpeg__ + " -i " + file + " -acodec " + codec + " -b:a 384k audio." + to)
+
+        outFile = "audio." + to
+        out, err = self.__exec__(self.__ffmpeg__ + " -i " + file + " -acodec " + codec + " -b:a 384k " + outFile)
+
+        print out, err
+
+        return outFile
 
         print out, err
 
