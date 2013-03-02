@@ -86,6 +86,24 @@ class Ffmpeg(Convert):
 
         return outFile
 
+    def addTrack(self, type, fileToAdd, file=False):
+        print "\n\n adding track..."
+        type = type.title()
+        if not file:
+            file = self.config['temp'] if "temp" in self.config else self.config['file']
+            file = os.path.join(file['path'], file['name'])
+
+        print file
+        cmd = self.__ffmpeg__ + " -i "
+        if os.path.isfile(file):
+            cmd = cmd + file + " -i "
+        cmd = cmd + fileToAdd
+        cmd = cmd + " -acodec copy -vcodec copy"
+        cmd = cmd + " -y " + file
+
+        print cmd
+        out, err = self.__exec__(cmd)
+
         print out, err
 
     def mergeTracks(self, tracks, file=False):
