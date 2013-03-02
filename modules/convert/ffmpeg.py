@@ -1,5 +1,4 @@
 from convert import *
-import os
 import re
 
 
@@ -19,17 +18,26 @@ class Ffmpeg(Convert):
         super(Ffmpeg, self).__init__(config)
 
     def convert(self):
-        origVideo = self.extractVideo()
-        origAudio = self.extractAudio()
-#        if not self.type['audio'] == "m4a":
-#            newAudio = self.convertAudio(to='m4a')
+        tracks = []
+        tracks.append(self.extractVideo())
+        tracks.append(self.extractAudio())
+
+        if not self.type['audio'] == "m4a":
+            tracks.insert(1, self.convertAudio(tracks[1], to='m4a'))
+#        if not self.type['video'] == "h264":
+#            newVideo = self.convertVideo(to="m4v")
+#
+#        if "sub" in self.config and os.path.isfile(self.config['sub']):
+#            tracks.append(self.config['sub'])
+
+        self.mergeTracks(tracks)
 
     def extractAudio(self, file=False):
+        print "\n\n extract audio..."
         if not file:
             file = self.config['temp'] if "temp" in self.config else self.config['file']
             file = os.path.join(file['path'], self.config['file']['name'])
 
-        print "extracting audio..."
         self.type['audio'] = self.getMediaType("audio")
 
         outFile = "audio." + self.type['audio'] if self.type['audio'] else "ac3"
@@ -40,11 +48,11 @@ class Ffmpeg(Convert):
         return outFile
 
     def extractVideo(self, file=False):
+        print "\n\n exracts video..."
         if not file:
             file = self.config['temp'] if "temp" in self.config else self.config['file']
             file = os.path.join(file['path'], self.config['file']['name'])
 
-        print "extracting video..."
         self.type['video'] = self.getMediaType("video")
 
         self.type['video'] = self.type['video'] if not self.type['video'] == "h264" else "m4v"
@@ -65,6 +73,7 @@ class Ffmpeg(Convert):
         out, err = self.__exec__(self.__ffmpeg__ + " -i " + file)
 
         value = out if out else err
+        print err
         pattern = r"( )*(Stream) (#[0-9]:[0-9](\(.*\))?:) (" + type + ":) (?P<type>([A-Za-z0-9])*)"
         matches = re.search(pattern, value)
 
@@ -73,6 +82,7 @@ class Ffmpeg(Convert):
         return False
 
     def convertAudio(self, file=False, to='m4a'):
+        print "\n\n converts audio..."
         codec = "libfdk_aac" if to == "m4a" else to
         if not file:
             file = self.config['temp'] if "temp" in self.config else self.config['file']
