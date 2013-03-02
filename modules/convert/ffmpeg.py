@@ -88,4 +88,21 @@ class Ffmpeg(Convert):
 
         print out, err
 
+    def mergeTracks(self, tracks, file=False):
+        print "\n\n merging..."
+        if not file:
+            file = self.config['temp'] if "temp" in self.config else self.config['file']
+            file = os.path.join(file['path'], file['name'])
 
+        cmd = self.__ffmpeg__
+        for track in tracks:
+            cmd = cmd + " -i " + track
+        cmd = cmd + " -vcodec copy -acodec copy -scodec copy -y"
+        for i in range(len(tracks)):
+            cmd = cmd + " -map " + str(i) + ":0"
+        cmd = cmd + " " + file
+
+        print cmd + "\n\n"
+        out, err = self.__exec__(cmd)
+
+        print out, err
