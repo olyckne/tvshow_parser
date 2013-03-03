@@ -14,8 +14,8 @@ class Subtitle(object):
             file = os.path.join(self.config['file']['path'], name + ".srt")
             if os.path.isfile(file):
                 print "found file. copying to temp"
-                shutil.copy(file, self.config['temp'])
-                self.config['sub'] = os.path.join(self.config['temp'], name + ".srt")
+                shutil.copy(file, self.config['temp']['path'])
+                self.config['sub'] = os.path.join(self.config['temp']['path'], name + ".srt")
             else:
                 print "trying to download subtitle"
                 file = self.config['file']['name']
