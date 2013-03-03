@@ -27,8 +27,8 @@ class Ffmpeg(Convert):
 #        if not self.type['video'] == "h264":
 #            newVideo = self.convertVideo(to="m4v")
 #
-#        if "sub" in self.config and os.path.isfile(self.config['sub']):
-#            tracks.append(self.config['sub'])
+        if "sub" in self.config and os.path.isfile(self.config['sub']):
+            tracks.append(self.config['sub'])
 
         self.mergeTracks(tracks)
 
@@ -125,7 +125,7 @@ class Ffmpeg(Convert):
         cmd = self.__ffmpeg__
         for track in tracks:
             cmd = cmd + " -i " + track
-        cmd = cmd + " -vcodec copy -acodec copy -scodec copy -y"
+        cmd = cmd + " -vcodec copy -acodec copy -scodec mov_text -y"
         for i in range(len(tracks)):
             cmd = cmd + " -map " + str(i) + ":0"
         cmd = cmd + " " + file
