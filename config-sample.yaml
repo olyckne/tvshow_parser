@@ -6,11 +6,11 @@ log:
 type: "TV"
 
 # standard language to use
-# ISO 639-1 format
+# ISO 639 format
 language:
-  video: "en"
-  audio: "en"
-  subtitle: ["en"]
+  video: "eng"
+  audio: "eng"
+  subtitle: ["eng"]
 
 
 # Which modules to use for stuff
