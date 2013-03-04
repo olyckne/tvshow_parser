@@ -143,20 +143,21 @@ def convert(config, modules):
         file_handler.moveToTemp()
         file_handler.cdToTemp()
 
-        data = modules['metadata'].getInfo({
-                                            "name": media_handler.name,
-                                            "season": media_handler.season,
-                                            "episode": media_handler.episode
-                                            })
-        print data
-        modules['metadata'].getArtwork(media_handler.name, media_handler.season)
+        # data = modules['metadata'].getInfo({
+        #                                     "name": media_handler.name,
+        #                                     "season": media_handler.season,
+        #                                     "episode": media_handler.episode
+        #                                     })
+        # print data
+        # modules['metadata'].getArtwork(media_handler.name, media_handler.season)
+        modules['subtitle'].getSubtitle()
         modules['convert'].convert()
         # convert()
         # addTags()
         # optimize()
-#        if modules['add'].add(os.path.join(config['temp']['path'], config['temp']['file'])):
-        file_handler.removeTemp()
-        modules['notification'].sendNotification(description=config['file']['name'])
+        if modules['add'].add(os.path.join(config['temp']['path'], config['temp']['name'])):
+            file_handler.removeTemp()
+            modules['notification'].sendNotification(description=config['file']['name'])
 
 
 def main(argv):
