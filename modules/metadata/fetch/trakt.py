@@ -25,16 +25,18 @@ class Trakt(Metadata):
         elif self.config['type'] == "MOVIE":
             pass
 
-    def getEpisodeInfo(self, name, season=0, episode=0):
+    def getEpisodeInfo(self, name, season=0, episode=0, hd=False):
         if type(name) is type({}) or type(name) is type([]):
             season = name['season'] if "season" in name else name[1]
             episode = name['episode'] if "episode" in name else name[2]
             name = name['name'] if "name" in name else name[0]
+            hd = name['hd'] if 'hd' in name else False
 
         serie = {
             "name": name,
             "season": season,
-            "episode": episode
+            "episode": episode,
+            "hd": hd
         }
 
         url = self.constructUrl("episode", [name, season, episode])
