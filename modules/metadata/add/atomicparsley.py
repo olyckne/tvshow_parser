@@ -17,3 +17,23 @@ class Atomicparsley(Metadata):
             sys.exit(1)
 
         super(Atomicparsley, self).__init__(config)
+
+
+
+    def addMetadata(self, metadata, file=False):
+        print metadata
+
+        if not file:
+            file = self.config['temp'] if 'temp' in self.config else self.config['file']
+            file = os.path.join(file['path'], file['name'])
+
+        cmd = self.__atomicparsley__ + " " + file + " -W "
+        cmd = cmd + "--stik 'TV Show'"
+
+        print cmd
+
+        p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE)
+
+        out, err = p.communicate()
+
+        print out, err
