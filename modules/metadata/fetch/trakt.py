@@ -1,4 +1,4 @@
-from metadata import *
+from ..metadata import *
 import json
 import datetime
 

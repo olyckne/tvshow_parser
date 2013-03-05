@@ -15,7 +15,8 @@ language:
 
 # Which modules to use for stuff
 modules:
-  metadata: "trakt"
+  metadata_fetch: "trakt"
+  metadata_add: "atomicparsley"
   add: "itunes"
   subtitle: "subtitle"
   notification: "growl"
