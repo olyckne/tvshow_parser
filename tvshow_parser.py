@@ -105,9 +105,10 @@ def usage():
 def loadModules(config):
     res = {}
     for module in config['modules']:
+        path = module.replace("_", ".")
         try:
-            exec("from modules." + module + " import " + config['modules'][module])
-            m = sys.modules['modules.' + module + '.' + config['modules'][module]]
+            exec("from modules." + path + " import " + config['modules'][module])
+            m = sys.modules['modules.' + path + '.' + config['modules'][module]]
             res[module] = getattr(m, config['modules'][module].capitalize())(config)
         except Exception as e:
             print e
@@ -143,15 +144,17 @@ def convert(config, modules):
         file_handler.moveToTemp()
         file_handler.cdToTemp()
 
-        # data = modules['metadata'].getInfo({
-        #                                     "name": media_handler.name,
-        #                                     "season": media_handler.season,
-        #                                     "episode": media_handler.episode
-        #                                     })
-        # print data
-        # modules['metadata'].getArtwork(media_handler.name, media_handler.season)
+        metadata = modules['metadata_fetch'].getInfo({
+                                               "name": media_handler.name,
+                                               "season": media_handler.season,
+                                               "episode": media_handler.episode,
+                                               "hd": media_handler.hd
+                                               })
+        print metadata
+        modules['metadata_fetch'].getArtwork(media_handler.name, media_handler.season)
         modules['subtitle'].getSubtitle()
         modules['convert'].convert()
+        modules['metadata_add'].addMetadata(metadata)
         # convert()
         # addTags()
         # optimize()
