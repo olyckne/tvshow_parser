@@ -17,6 +17,25 @@ Parses TV Shows. Mainly for converting to iTunes friendly format, adding metadat
 ### Usage
 - basic usage: `python tvshow_parser.py filename`
 
+`python tvshow_parser.py -h`
+
+| flag   | description | implemented
+| ------  | ------ | ------ | 
+|  -h      |  help  | x |
+|  -d  |  Debug level  | |
+| -c | config file | x |
+| --filename | Use this string for parsing info instead of actual filename | x |
+| --sub-module | subtitle module to use - Default: subliminal | x
+| --sub | subtitle module to use - Default: subliminal | x
+| --type | subtitle module to use - Default: subliminal | x
+| --season | Set season # - Default: Parse from filename | x
+| --name |                   Set name - Default: Parse from filename | x
+| --episode |                Set episode # - Default: Parse from filename | x
+| --add-module |             add module to use - Default: itunes | x
+| --hd |                     Set HD quality: True/False - Default: Parse from filename | x
+| --notification-module |    notification module to use - Default: growl | x
+| --meta-module |            metadata module to use - Default trakt | x
+
 
 
 ### Short story: 
