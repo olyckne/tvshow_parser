@@ -9,7 +9,7 @@ __app_name__ = "tvshow_parser"
 __version__ = 0.5
 
 shortArgs = {
-    "h": "help",
+    "h:": "help",
     "c:": "config file",
     "d:": "debug level",
 }
@@ -77,6 +77,10 @@ def parseArgs(argv, config):
     theFile = "".join(args)
     config['file']['path'] = os.path.dirname(theFile)
     config['file']['name'] = os.path.basename(theFile)
+
+    if not theFile:
+        print "No input..."
+        sys.exit(2)
 
     return config
 
