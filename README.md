@@ -19,22 +19,22 @@ Parses TV Shows. Mainly for converting to iTunes friendly format, adding metadat
 
 `python tvshow_parser.py -h`
 
-| flag   | description | implemented
-| ------  | ------ | ------ | 
-|  -h      |  help  | x |
-|  -d  |  Debug level  | |
-| -c | config file | x |
-| --filename | Use this string for parsing info instead of actual filename | x |
-| --sub-module | subtitle module to use - Default: subliminal | x
-| --sub | subtitle module to use - Default: subliminal | x
-| --type | subtitle module to use - Default: subliminal | x
-| --season | Set season # - Default: Parse from filename | x
-| --name |                   Set name - Default: Parse from filename | x
-| --episode |                Set episode # - Default: Parse from filename | x
-| --add-module |             add module to use - Default: itunes | x
-| --hd |                     Set HD quality: True/False - Default: Parse from filename | x
-| --notification-module |    notification module to use - Default: growl | x
-| --meta-module |            metadata module to use - Default trakt | x
+| flag                  | description | default | implemented
+| --------------------- | ----------- | ------- | ------------- 
+| -h                    | show help                                                   | -                     | x |
+| -d                    | Debug level                                                 | -                     | - |
+| -c                    | config file                                                 | ./config.yaml         | x |
+| --filename            | Use this string for parsing info instead of actual filename | -                     | x |
+| --sub-module          | subtitle module to use                                      | subliminal            | x |
+| --sub                 | subtitle file to use                                        | input_filename.srt    | x |
+| --type                | type of media (TV/Movie)                                    | TV                    | - |
+| --season              | Set season number                                           | parses from filename  | x |
+| --name                | Set name                                                    | parses from filename  | x |
+| --episode             | Set episode number                                          | parses from filename  | x |
+| --add-module          | Add module to use                                           | itunes                | x |
+| --hd                  | Set HD quality: True/False                                  | parses from filename  | x |
+| --notification-module | Notification module to use                                  | growl                 | x |
+| --meta-module         | Metadata module to use                                      | trakt                 | x |
 
 
 
