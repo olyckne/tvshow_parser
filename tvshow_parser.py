@@ -169,11 +169,13 @@ def convert(config, modules):
 
 def main(argv):
     # Load config file
-    configFile = "config.yaml"
+    root = os.path.dirname(argv[0])
+    configFile = os.path.join(root, "config.yaml")
+    print configFile
     config = loadConfig(configFile)
-
+    print config
     # Parse arguments
-    parseArgs(argv, config)
+    parseArgs(argv[1:], config)
 
     # Load modules for metadata, addTo and subtitle
     modules = loadModules(config)
@@ -181,4 +183,4 @@ def main(argv):
     convert(config, modules)
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main(sys.argv)
