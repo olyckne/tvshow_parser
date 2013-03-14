@@ -116,6 +116,7 @@ def loadModules(config):
             res[module] = getattr(m, config['modules'][module].capitalize())(config)
         except Exception as e:
             print e
+	    sys.exit(1)
 
     return res
 
@@ -171,9 +172,7 @@ def main(argv):
     # Load config file
     root = os.path.dirname(argv[0])
     configFile = os.path.join(root, "config.yaml")
-    print configFile
     config = loadConfig(configFile)
-    print config
     # Parse arguments
     parseArgs(argv[1:], config)
 
