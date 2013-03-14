@@ -14,7 +14,6 @@ class Atomicparsley(Metadata):
 
         if not self.__atomicparsley__:
             raise Exception("AtomicParsley not found?! Exiting")
-            sys.exit(1)
 
         super(Atomicparsley, self).__init__(config)
 
