@@ -41,7 +41,7 @@ class Atomicparsley(Metadata):
             "season": " --TVSeasonNum " + metadata['season'],
             "episode": " --TVEpisodeNum " + metadata['episode'],
             "title": ' --title "%s"' %(metadata['epName']),
-            "epID": " --TVEpisode " + metadata['season'] + metadata['episode'],
+            "epID": " --TVEpisode " + metadata['season'] + metadata['episode'].rjust(2, '0'),
             "album": " --album '%s, Season %s'" %(metadata['name'], metadata['season']),
             "track": " --tracknum %s/%s" %(metadata['episode'], metadata['nrOfEpisodes']),
             "year": " --year '%s'" %(metadata['year']),
