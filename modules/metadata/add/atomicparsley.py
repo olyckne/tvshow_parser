@@ -33,7 +33,8 @@ class Atomicparsley(Metadata):
         print metadata.keys()
 
         print "\n\n"
-
+        comment = ", ".join(metadata['comments'])
+        comment = comment + "\n" + os.path.basename(self.config['file']['name'])
         tags = {
             "kind": " --stik '%s'" %('TV Show' if self.config['type'] == "TV" else "Movie"),
             "name": " --artist '%(data)s' --TVShowName '%(data)s'" %{"data": metadata['name']},
@@ -46,7 +47,7 @@ class Atomicparsley(Metadata):
             "year": " --year '%s'" %(metadata['year']),
             "desc": ' --description "%(data)s" --longdesc "%(data)s"' %{"data": metadata['desc']},
             "genre": " --genre '%s'" %(metadata['genre']),
-            "comment": " --comment '%s'" %(metadata['comments']),
+            "comment": " --comment '%s'" %(comment),
             "hd": " --hdvideo %s" % metadata['hd'],
             "art": " --artwork 'art.jpg'"
         }
