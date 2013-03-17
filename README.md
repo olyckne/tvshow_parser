@@ -14,6 +14,14 @@ Parses TV Shows. Mainly for converting to iTunes friendly format, adding metadat
 
 --
 
+### Requirements
+I'm not sure about compatibility but:
+
+- ffmpeg module needs ffmpeg with libfdk_aac
+- atomicparsley module needs AtomicParsley
+
+--
+
 ### Usage
 - basic usage: `python tvshow_parser.py filename`
 
