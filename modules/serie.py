@@ -16,7 +16,7 @@ class Serie(object):
 #
 #        #
 #        # TV.Show.Name.SxxExx.mkv
-        pattern = r"^(?P<name>(.*))\.(?:S)(?P<season>([0-9])*)(?:E)(?P<episode>([0-9])*)"
+        pattern = r"^(?P<name>(.*))\.(?:[Ss])(?P<season>([0-9])*)(?:[Ee])(?P<episode>([0-9])*)"
         matches = re.search(pattern, self.filename)
         if not matches:
             ## TV.Show.Name.01x01.mkv
