@@ -33,7 +33,7 @@ class Atomicparsley(Metadata):
         print metadata.keys()
 
         print "\n\n"
-        comment = ", ".join(metadata['comments'])
+	comment = ", ".join(metadata['comments']) if not isinstance(metadata['comments'], basestring) else metadata['comments']
         comment = comment + "\n" + os.path.basename(self.config['file']['name'])
         tags = {
             "kind": " --stik '%s'" %('TV Show' if self.config['type'] == "TV" else "Movie"),
