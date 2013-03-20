@@ -29,7 +29,7 @@ class Subtitle(object):
                     len(sub.items()[0][1]):
                         # Get filename
                         self.config['sub']['file'] = sub.items()[0][1][0].path
-                        self.config['sub']['lang'] = sub.items()[0][1][0].language.name
+                        self.config['sub']['lang'] = sub.items()[0][1][0].language.alpha3
                 else:
                     self.config['sub'] = False
         return self.config['sub']
