@@ -53,8 +53,6 @@ class Atomicparsley(Metadata):
         }
         for tag in tags:
             cmd = cmd + tags[tag]
-        print cmd
-
 
         p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE)
 
