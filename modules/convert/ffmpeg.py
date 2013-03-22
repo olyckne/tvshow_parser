@@ -137,7 +137,7 @@ class Ffmpeg(Convert):
         cmd = cmd + " -vcodec copy -acodec copy -scodec mov_text -y"
         for i in range(len(tracks)):
             cmd = cmd + " -map " + str(i) + ":0"
-        cmd = cmd + " " + file
+        cmd = cmd + " -movflags faststart " + file
 
         print cmd + "\n\n"
         out, err = self.__exec__(cmd)
