@@ -17,8 +17,8 @@ Parses TV Shows. Mainly for converting to iTunes friendly format, adding metadat
 ### Requirements
 I'm not sure about compatibility but:
 
-- ffmpeg module needs ffmpeg with libfdk_aac
-- atomicparsley module needs AtomicParsley
+- ffmpeg module needs ffmpeg with libfdk_aac (I use v1.2)
+- atomicparsley module needs AtomicParsley (I use v0.9.5)
 
 --
 
