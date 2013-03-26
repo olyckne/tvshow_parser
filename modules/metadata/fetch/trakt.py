@@ -26,7 +26,7 @@ class Trakt(Metadata):
             pass
 
     def getEpisodeInfo(self, name, season=0, episode=0, hd=False):
-        if type(name) is type({}) or type(name) is type([]):
+        if isinstance(name, dict) or isinstance(name, list):
             season = name['season'] if "season" in name else name[1]
             episode = name['episode'] if "episode" in name else name[2]
             name = name['name'] if "name" in name else name[0]
@@ -89,6 +89,7 @@ class Trakt(Metadata):
                 print "downloading artwork"
                 with open("art.jpg", "wb") as f:
                     f.write(content)
+
 
     def constructUrl(self, type, params):
         url = self.url[type] + self.trakt['key'] + "/"
