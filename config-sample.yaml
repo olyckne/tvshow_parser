@@ -2,6 +2,13 @@ log:
   level: 1
   path: "./"
 
+
+# actions to use
+actions:
+  sub: True
+  metadata: True
+  convert : True
+
 # Type of media - TV/Movie
 type: "TV"
 
