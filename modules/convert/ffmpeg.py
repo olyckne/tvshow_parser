@@ -27,7 +27,7 @@ class Ffmpeg(Convert):
 #        if not self.type['video'] == "h264":
 #            newVideo = self.convertVideo(to="m4v")
 #
-        if "sub" in self.config and self.config['sub'] \
+        if self.config['actions']['sub'] and "sub" in self.config and self.config['sub'] \
         and "file" in self.config['sub'] and os.path.isfile(self.config['sub']['file']):
             tracks.append(self.config['sub'])
 

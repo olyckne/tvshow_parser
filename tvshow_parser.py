@@ -149,17 +149,23 @@ def convert(config, modules):
         file_handler.moveToTemp()
         file_handler.cdToTemp()
 
-        metadata = modules['metadata_fetch'].getInfo({
-                                               "name": media_handler.name,
-                                               "season": media_handler.season,
-                                               "episode": media_handler.episode,
-                                               "hd": media_handler.hd
-                                               })
-        print metadata
-        modules['metadata_fetch'].getArtwork(media_handler.name, media_handler.season)
-        modules['subtitle'].getSubtitle()
-        modules['convert'].convert()
-        modules['metadata_add'].addMetadata(metadata)
+        if config['actions']['metadata']:
+            metadata = modules['metadata_fetch'].getInfo({
+                                                   "name": media_handler.name,
+                                                   "season": media_handler.season,
+                                                   "episode": media_handler.episode,
+                                                   "hd": media_handler.hd
+                                                   })
+            print metadata
+            modules['metadata_fetch'].getArtwork(media_handler.name, media_handler.season)
+        if config['actions']['sub']:
+            modules['subtitle'].getSubtitle()
+
+        if config['actions']['convert']:
+            modules['convert'].convert()
+
+        if config['actions']['metadata']:
+            modules['metadata_add'].addMetadata(metadata)
         # convert()
         # addTags()
         # optimize()
