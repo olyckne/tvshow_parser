@@ -43,7 +43,9 @@ I'm not sure about compatibility but:
 | --hd                  | Set HD quality: True/False                                  | parses from filename  | x |
 | --notification-module | Notification module to use                                  | growl                 | x |
 | --meta-module         | Metadata module to use                                      | trakt                 | x |
-
+| --no-sub              | Don't add subtitle                                          | False                 | x |
+| --no-convert          | Don't convert video                                         | False                 | x |
+| --no-metadata         | Don't add metadata                                          | False                 | x |
 
 
 ### Short story: 
