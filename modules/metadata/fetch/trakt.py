@@ -9,7 +9,8 @@ class Trakt(Metadata):
     url = {
         "episode": baseUrl + "show/episode/summary.json/",
         "season": baseUrl + "show/seasons.json/",
-        "watchlist": baseUrl + "show/episode/watchlist/"
+        "watchlist": baseUrl + "show/episode/watchlist/",
+        "movie": baseUrl + "movie/summary/"
     }
 
     def __init__(self, config):
@@ -70,6 +71,9 @@ class Trakt(Metadata):
         print url
 
         return serie
+
+    def getMovieInfo(self, name):
+        pass
 
     def getArtwork(self, serie, season):
         name = serie['name'] if "name" in serie else serie
