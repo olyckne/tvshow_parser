@@ -150,6 +150,9 @@ def convert(config, modules):
         # Init media_handler for the type
         if config['type'] == "TV":
             media_handler = serie.Serie(config)
+        elif config['type'] == "MOVIE":
+            print "Not implemented yet!"
+            sys.exit(1)
 
         # LETS GO!
         media_handler.parseFilename()
