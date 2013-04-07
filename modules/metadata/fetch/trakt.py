@@ -24,7 +24,7 @@ class Trakt(Metadata):
         if self.config['type'] == "TV":
             return self.getEpisodeInfo(data)
         elif self.config['type'] == "MOVIE":
-            pass
+            return self.getMovieInfo(data)
 
     def getEpisodeInfo(self, name, season=0, episode=0, hd=False):
         if isinstance(name, dict) or isinstance(name, list):
@@ -73,7 +73,8 @@ class Trakt(Metadata):
         return serie
 
     def getMovieInfo(self, name):
-        pass
+        url = self.constructUrl("movie", [name])
+        print url
 
     def getArtwork(self, serie, season):
         name = serie['name'] if "name" in serie else serie
