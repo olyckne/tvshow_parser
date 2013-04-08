@@ -75,6 +75,10 @@ class Trakt(Metadata):
     def getMovieInfo(self, name):
         url = self.constructUrl("movie", [name])
         print url
+        resp, content = self.httprequest(url, "GET")
+        content = json.loads(content)
+        if not "status" in content:
+            print content
 
     def getArtwork(self, serie, season):
         name = serie['name'] if "name" in serie else serie
