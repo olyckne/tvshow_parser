@@ -10,7 +10,7 @@ class Trakt(Metadata):
         "episode": baseUrl + "show/episode/summary.json/",
         "season": baseUrl + "show/seasons.json/",
         "watchlist": baseUrl + "show/episode/watchlist/",
-        "movie": baseUrl + "movie/summary/"
+        "movie": baseUrl + "movie/summary.json/"
     }
 
     def __init__(self, config):
