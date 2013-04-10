@@ -2,7 +2,7 @@ import sys
 import getopt
 import yaml
 import os
-from modules import file, serie
+from modules import file, serie, movie
 
 
 __app_name__ = "tvshow_parser"
@@ -151,6 +151,7 @@ def convert(config, modules):
         if config['type'] == "TV":
             media_handler = serie.Serie(config)
         elif config['type'] == "MOVIE":
+            media_handler = movie.Movie(config)
             print "Not implemented yet!"
             sys.exit(1)
 
