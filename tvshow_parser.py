@@ -137,6 +137,10 @@ def convert(config, modules):
     print config['file']
 
     # If file isn't a video, try to find one (or more)
+    if not os.path.isfile(os.path.join(config['file']['path'], config['file']['name'])):
+        print "Not a file? Exiting..."
+        sys.exit(1)
+
     if not file_handler.isVideo():
         files = file_handler.findVideo()
         for f in files['files']:
