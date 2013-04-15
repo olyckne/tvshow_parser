@@ -19,16 +19,23 @@ class Ffmpeg(Convert):
 
     def convert(self):
         tracks = []
-        tracks.append(self.extractVideo())
-        tracks.append(self.extractAudio())
+
+        videoFile = self.extractVideo()
+
+        self.type['audio'] = self.getMediaType('audio')
+        audioFile = self.extractAudio()
+        if self.type['audio']['type'] == "ac3":
+            tracks.append(audioFile)
 
         if not self.type['audio']['type'] == "m4a":
-            tracks.insert(1, self.convertAudio(tracks[1]['file'], to='m4a'))
-#        if not self.type['video'] == "h264":
-#            newVideo = self.convertVideo(to="m4v")
-#
+            tracks.insert(1, self.convertAudio(audioFile['file'], to='m4a'))
+        if not self.type['video'] == "h264":
+            tracks.insert(0, self.convertVideo(videoFile['file'], to="m4v"))
+        else:
+            tracks.append(videoFile)
+
         if self.config['actions']['sub'] and "sub" in self.config and self.config['sub'] \
-        and "file" in self.config['sub'] and os.path.isfile(self.config['sub']['file']):
+                and "file" in self.config['sub'] and os.path.isfile(self.config['sub']['file']):
             tracks.append(self.config['sub'])
 
         self.mergeTracks(tracks)
@@ -57,6 +64,8 @@ class Ffmpeg(Convert):
         self.type['video'] = self.getMediaType("video")
 
         self.type['video']['type'] = self.type['video']['type'] if not self.type['video']['type'] == "h264" else "m4v"
+        if self.type['video']['type'] == 'mpeg4':
+            self.type['video']['type'] = 'mp4'
 
         self.type['video']['file'] = "video." + self.type['video']['type'] if self.type['video'] else "m4v"
         cmd = self.__ffmpeg__ + " -i " + file + " -an -vcodec copy " + self.type['video']['file']
@@ -98,6 +107,21 @@ class Ffmpeg(Convert):
         print out, err
 
         return {"type": to, "lang": self.type['audio']['lang'], "file": outFile}
+
+    def convertVideo(self, file=False, to='h264'):
+        print "\n\n converts video..."
+
+        if not file:
+            file = self.config['temp'] if "temp" in self.config else self.config['file']
+            file = os.path.join(file['path'], 'audio*')
+        print file
+
+        outFile = "video." + to
+        out, err = self.__exec__(self.__ffmpeg__ + " -i " + file + " " + outFile)
+
+        print out, err
+
+        return {"type": to, "lang": self.type['video']['lang'], "file": outFile}
 
     def addTrack(self, type, fileToAdd, file=False):
         print "\n\n adding track..."
