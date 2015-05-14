@@ -33,10 +33,14 @@ class Ffmpeg(Convert):
         if not self.type['video']['type'] in ["h264", "m4v"]:
             tracks.insert(0, self.convertVideo(tracks[1]['file'], to='m4v'))
 
-        if self.config['actions']['sub'] and "sub" in self.config and self.config['sub'] \
-                and "file" in self.config['sub'] and os.path.isfile(self.config['sub']['file']):
-            tracks.append(self.config['sub'])
-
+        if self.config['actions']['sub'] and "sub" in self.config and self.config['sub']:
+            print self.config['sub'] 
+            for subtitle in self.config['sub']:
+                sub = self.config['sub'][subtitle]
+                print sub
+                if "file" in sub and os.path.isfile(sub['file']):
+                    tracks.append(sub)
+        
         self.mergeTracks(tracks)
 
     def extractAudio(self, file=False):

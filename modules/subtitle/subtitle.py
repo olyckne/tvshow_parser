@@ -1,6 +1,7 @@
 import subliminal
 import os
 import shutil
+from babelfish import Language
 
 
 class Subtitle(object):
@@ -22,14 +23,23 @@ class Subtitle(object):
                 print "trying to download subtitle"
                 file = self.config['file']['name']
                 lang = self.config['language']['subtitle']
+                languages = set();
+                for l in lang:
+                    languages.add(Language(l))
+                print languages
+                videoPath = os.path.join(self.config['temp']['path'], file)
+                video = set([subliminal.scan_video(videoPath)])
+                print video
                 cache = self.config['temp']['path'] if "temp" in self.config else self.config['file']['path']
-                sub = subliminal.download_subtitles(file, languages=lang, cache_dir=cache)
-                if sub.items() and \
-                    len(sub.items()[0]) >= 2 and \
-                    len(sub.items()[0][1]):
-                        # Get filename
-                        self.config['sub']['file'] = sub.items()[0][1][0].path
-                        self.config['sub']['lang'] = sub.items()[0][1][0].language.alpha3
-                else:
+                sub = subliminal.download_best_subtitles(video, languages)
+                print sub.items()
+                if not sub.items():
                     self.config['sub'] = False
+                for item in sub.items():
+                    subLang = item[1][0].language.alpha3
+                    self.config['sub'][subLang] = {}
+                    self.config['sub'][subLang]['lang'] = subLang
+                    self.config['sub'][subLang]['file'] = subliminal.subtitle.get_subtitle_path(videoPath, Language(subLang))
+                
+                print self.config['sub']
         return self.config['sub']
