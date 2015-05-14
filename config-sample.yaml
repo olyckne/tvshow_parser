@@ -45,3 +45,10 @@ itunes:
   path: '~/Music/iTunes/iTunes Media/Automatically Add to iTunes.localized/'
   addDirect: true
 
+# metadata settings
+# Sometimes the filename doesn't  parse to the actual name of the show/movie.
+# Maybe the metadata service used appends the year to separate the show out. 
+# Change it here
+#
+#metadata:
+#    The Flash: "The Flash 2014"

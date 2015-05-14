@@ -43,6 +43,11 @@ class Serie(object):
         else:
             self.hd = False
 
+        # Check if name is in config and we should use that instead of the parsed one
+        if "metadata" in self.config['file']:
+            if self.name in self.config['metadata']:
+                self.name = self.config['metadata'][self.name]
+
         # Check if user passed args to use for metadata
         if "metadata" in self.config['file']:
             metadata = self.config['file']['metadata']
@@ -51,3 +56,4 @@ class Serie(object):
             self.episode = metadata['episode'] if 'episode' in metadata else self.episode
             if "hd" in metadata:
                 self.hd = True if metadata["hd"].lower() in ["true", "1", "yes"] else False
+
