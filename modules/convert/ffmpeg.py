@@ -23,12 +23,14 @@ class Ffmpeg(Convert):
         tracks.append(self.extractAudio())
 
         print self.type['audio']['type']
+        print self.type['video']['type']
+
         if self.type['audio']['type'] == 'aac':
             print "don't need to convert"
 
         if not self.type['audio']['type'] in ["m4a", "aac"]:
             tracks.insert(1, self.convertAudio(tracks[1]['file'], to='m4a'))
-        if not self.type['video'] == "h264":
+        if not self.type['video']['type'] in ["h264", "m4v"]:
             tracks.insert(0, self.convertVideo(tracks[1]['file'], to='m4v'))
 
         if self.config['actions']['sub'] and "sub" in self.config and self.config['sub'] \
@@ -158,7 +160,7 @@ class Ffmpeg(Convert):
         cmd = cmd + " -vcodec copy -acodec copy -scodec mov_text -y"
         for i in range(len(tracks)):
             cmd = cmd + " -map " + str(i) + ":0"
-        cmd = cmd + " -movflags faststart -absf aac_adtstoasc" + file
+        cmd = cmd + " -movflags faststart -absf aac_adtstoasc " + file
 
         print cmd + "\n\n"
         out, err = self.__exec__(cmd)

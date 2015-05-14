@@ -58,8 +58,8 @@ class Trakt(Metadata):
                 genres = show['genres']
                 serie['genre'] = genres[0]
                 genres.pop(0)
+                serie['comments'] = ", ".join(genres)
 
-            serie['comments'] = ", ".join(genres)
             serie['id'] = episode['tvdb_id']
 
             url = self.constructUrl("seasons", [name])
