@@ -5,10 +5,11 @@ import datetime
 
 class Trakt(Metadata):
 
-    baseUrl = "http://api.trakt.tv/"
+    baseUrl = "https://api.trakt.tv/"
     url = {
         "episode": baseUrl + "show/episode/summary.json/",
-        "season": baseUrl + "show/seasons.json/",
+        "seasons": baseUrl + "show/seasons.json/",
+        "season": baseUrl + "show/season.json/",
         "watchlist": baseUrl + "show/episode/watchlist/",
         "movie": baseUrl + "movie/summary.json/"
     }
@@ -37,11 +38,14 @@ class Trakt(Metadata):
             "name": name,
             "season": season,
             "episode": episode,
-            "hd": hd
+            "hd": hd,
+            "comments": "",
+            "genre": ""
         }
 
         url = self.constructUrl("episode", [name, season, episode])
         resp, content = self.httprequest(url, "GET")
+        print url
         content = json.loads(content)
         if not "status" in content:
             show = content['show']
@@ -50,15 +54,18 @@ class Trakt(Metadata):
             serie['desc'] = episode['overview'].replace('"', "'")
             serie['epName'] = episode['title'].replace('"', "'")
             serie['year'] = datetime.date.fromtimestamp(episode['first_aired']).isoformat()
-            genres = show['genres']
-            serie['genre'] = genres[0]
-            genres.pop(0)
+            if "genres" in show:
+                genres = show['genres']
+                serie['genre'] = genres[0]
+                genres.pop(0)
 
             serie['comments'] = ", ".join(genres)
             serie['id'] = episode['tvdb_id']
 
-            url = self.constructUrl("season", [name])
+            url = self.constructUrl("seasons", [name])
             resp, content = self.httprequest(url, "GET")
+            print url
+            print content
             content = json.loads(content)
 
             if not "status" in content:
@@ -82,7 +89,7 @@ class Trakt(Metadata):
 
     def getArtwork(self, serie, season):
         name = serie['name'] if "name" in serie else serie
-        url = self.constructUrl("season", [name, season])
+        url = self.constructUrl("seasons", [name])
         print url
         image = False
         resp, content = self.httprequest(url, "GET")
