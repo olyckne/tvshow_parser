@@ -19,20 +19,17 @@ class Ffmpeg(Convert):
 
     def convert(self):
         tracks = []
+        tracks.append(self.extractVideo())
+        tracks.append(self.extractAudio())
 
-        videoFile = self.extractVideo()
+        print self.type['audio']['type']
+        if self.type['audio']['type'] == 'aac':
+            print "don't need to convert"
 
-        self.type['audio'] = self.getMediaType('audio')
-        audioFile = self.extractAudio()
-        if self.type['audio']['type'] == "ac3":
-            tracks.append(audioFile)
-
-        if not self.type['audio']['type'] == "m4a":
-            tracks.insert(1, self.convertAudio(audioFile['file'], to='m4a'))
+        if not self.type['audio']['type'] in ["m4a", "aac"]:
+            tracks.insert(1, self.convertAudio(tracks[1]['file'], to='m4a'))
         if not self.type['video'] == "h264":
-            tracks.insert(0, self.convertVideo(videoFile['file'], to="m4v"))
-        else:
-            tracks.append(videoFile)
+            tracks.insert(0, self.convertVideo(tracks[1]['file'], to='m4v'))
 
         if self.config['actions']['sub'] and "sub" in self.config and self.config['sub'] \
                 and "file" in self.config['sub'] and os.path.isfile(self.config['sub']['file']):
@@ -161,7 +158,7 @@ class Ffmpeg(Convert):
         cmd = cmd + " -vcodec copy -acodec copy -scodec mov_text -y"
         for i in range(len(tracks)):
             cmd = cmd + " -map " + str(i) + ":0"
-        cmd = cmd + " -movflags faststart " + file
+        cmd = cmd + " -movflags faststart -absf aac_adtstoasc" + file
 
         print cmd + "\n\n"
         out, err = self.__exec__(cmd)
