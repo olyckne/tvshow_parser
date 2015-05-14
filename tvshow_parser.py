@@ -87,6 +87,9 @@ def parseArgs(argv, config):
     config['file']['path'] = os.path.dirname(theFile)
     config['file']['name'] = os.path.basename(theFile)
 
+    if config['file']['path'] == '.' or config['file']['path'] == '':
+        config['file']['path'] = os.getcwd()
+
     if not theFile:
         print "No input..."
         sys.exit(2)
