@@ -48,9 +48,11 @@ class Atomicparsley(Metadata):
             "desc": ' --description "%(data)s" --longdesc "%(data)s"' %{"data": metadata['desc']},
             "genre": " --genre '%s'" %(metadata['genre']),
             "comment": " --comment '%s'" %(comment),
-            "hd": " --hdvideo %s" % metadata['hd'],
-            "art": " --artwork 'art.jpg'"
+            "hd": " --hdvideo %s" % metadata['hd']
         }
+        if os.path.isfile('art.jpg'):
+            tags['art'] = " --artwork art.jpg"
+
         for tag in tags:
             cmd = cmd + tags[tag]
 
