@@ -1,4 +1,7 @@
-tvshow_parser
+[![Dependency
+Status](https://www.versioneye.com/user/projects/55438a1cd8fe1ad04f0001b8/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55438a1cd8fe1ad04f0001b8)
+
+# tvshow_parser
 =============
 
 Parses TV Shows. Mainly for converting to iTunes friendly format, adding metadata, subtitle and adding to iTunes
