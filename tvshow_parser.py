@@ -2,8 +2,8 @@ import sys
 import getopt
 import yaml
 import os
+import signal
 from modules import file, serie, movie
-
 
 __app_name__ = "tvshow_parser"
 __version__ = 0.5
@@ -30,6 +30,7 @@ longArgs = {
     "no-metadata": "Don't add metadata"
 }
 
+file_handler = {}
 
 def parseArgs(argv, config):
     try:
@@ -98,6 +99,7 @@ def parseArgs(argv, config):
 
 
 def loadConfig(file):
+    global config
     try:
         f = open(file)
         config = yaml.load(f)
@@ -132,8 +134,16 @@ def loadModules(config):
 
     return res
 
+def cleanup(signum, frame):
+    print "Cleaning up..."
+    file_handler.removeTemp()
+    sys.exit(0)
 
 def convert(config, modules):
+    global file_handler
+    # setup signal
+    signal.signal(signal.SIGINT, cleanup)
+
     # init file_handler
     file_handler = file.File(config)
 
@@ -170,22 +180,40 @@ def convert(config, modules):
         file_handler.cdToTemp()
 
         if config['actions']['metadata']:
-            metadata = modules['metadata_fetch'].getInfo({
+            try:
+                metadata = modules['metadata_fetch'].getInfo({
                                                    "name": media_handler.name,
                                                    "season": media_handler.season,
                                                    "episode": media_handler.episode,
                                                    "hd": media_handler.hd
                                                    })
-            print metadata
-            modules['metadata_fetch'].getArtwork(media_handler.name, media_handler.season)
+                print metadata
+                modules['metadata_fetch'].getArtwork(media_handler.name, media_handler.season)
+            except:
+                print "Couldn't fetch metadata... exiting..."
+                file_handler.removeTemp()
+                sys.exit(1)
         if config['actions']['sub']:
-            modules['subtitle'].getSubtitle()
+            try:
+                modules['subtitle'].getSubtitle()
+            except:
+                print "Something wrong with fetching subtitle."
 
         if config['actions']['convert']:
-            modules['convert'].convert()
+            try:
+                modules['convert'].convert()
+            except:
+                print "Oh Oh. Something wrong!"
+                file_handler.removeTemp()
+                sys.exit(1)
 
         if config['actions']['metadata']:
-            modules['metadata_add'].addMetadata(metadata)
+            try:
+                modules['metadata_add'].addMetadata(metadata)
+            except:
+                print "Couldn't add metdata. Exiting..."
+                file_hander.removeTemp()
+                sys.exit(1)
         # convert()
         # addTags()
         # optimize()
