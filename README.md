@@ -2,6 +2,8 @@
 [![Dependency
 Status](https://www.versioneye.com/user/projects/55438a1cd8fe1ad04f0001b8/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55438a1cd8fe1ad04f0001b8)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/olyckne/tvshow_parser/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/olyckne/tvshow_parser/?branch=master)
+[![Code
+Coverage](https://scrutinizer-ci.com/g/olyckne/tvshow_parser/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/olyckne/tvshow_parser/?branch=master)
 
 # tvshow_parser
 =============
