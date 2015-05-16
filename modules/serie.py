@@ -12,6 +12,8 @@ class Serie(object):
                 self.filename = self.config['file']['metadata']['filename']
             else:
                 self.filename = self.config['file']['name']
+        else:
+            self.filename = filename
 #        pattern = "'^(.+)\.(S?([0-9]|[0-9]){1,2})(E?([0-9]|[0-9]){1,2})(\.|-).*$'i"
 #
 #        #
