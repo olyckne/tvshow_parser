@@ -173,7 +173,11 @@ def convert(config, modules):
             sys.exit(1)
 
         # LETS GO!
-        media_handler.parseFilename()
+        filename = config['file']['name']
+        if "metadata" in config['file'] and "filename" in config['file']['metadata']:
+            filename = config['file']['metadata']['filename']
+
+        media_handler.parse(filename)
 
         # Move file to temp folder to work with
         file_handler.moveToTemp()
