@@ -30,7 +30,7 @@ class TestSerie():
         config = {
             "file": {
                 "metadata": {
-                    "name" "A TV Show"
+                    "name": "A TV Show"
                 }
             }
         }
