@@ -105,6 +105,9 @@ def loadConfig(file):
         config = yaml.load(f)
         f.close()
     except IOError:
+        print "Couldn't find a config.yaml file. Have you created one?"
+        sys.exit(0)
+        cleanup()
         return False
 
     return config
