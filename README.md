@@ -27,6 +27,11 @@ I'm not sure about compatibility but:
 - ffmpeg module needs ffmpeg with libfdk_aac (I use v1.2)
 - atomicparsley module needs AtomicParsley (I use v0.9.5)
 
+So if you use OSX like me install it with homebrew:
+```
+brew install atomicparsley ffmpeg --with-fdk-aac
+```
+
 --
 
 ### Usage
