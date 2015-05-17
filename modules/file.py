@@ -5,7 +5,6 @@ import sys
 import zipfile
 import rarfile
 
-
 class File(object):
 
     videoFormats = ["mkv", "avi", "mp4", "m4v"]
@@ -13,8 +12,8 @@ class File(object):
     def __init__(self, config):
         self.config = config
 
-    def isVideo(self):
-        extension = os.path.splitext(self.config['file']['name'])[1][1:]
+    def isVideo(self, filename):
+        extension = os.path.splitext(filename)[1][1:]
 
         return extension in self.videoFormats
 

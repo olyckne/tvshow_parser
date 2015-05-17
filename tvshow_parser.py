@@ -154,7 +154,7 @@ def convert(config, modules):
         print "Not a file? Exiting..."
         sys.exit(1)
 
-    if not file_handler.isVideo():
+    if not file_handler.isVideo(config['file']['name']):
         files = file_handler.findVideo()
         for f in files['files']:
             config['file']['path'] = files['path']
