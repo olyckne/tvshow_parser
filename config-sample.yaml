@@ -31,11 +31,11 @@ modules:
 
 # trakt.tv info
 trakt:
-  key: 'xxxx'
+  client_id: 'xxxx'
+  client_secret: 'xxx'
+  redirect_uri: 'urn:ietf:wg:oauth:2.0:oob'
+  pin_url: 'https://trakt.tv/pin/xxxx'
   addToWatchlist: false
-  username: 'username'
-  password: 'password' # This needs to be a sha1 of your trakt.tv password!
-
 
 # itunes settings
 # if addDirect is set to tru it uses applescript to add it to iTunes

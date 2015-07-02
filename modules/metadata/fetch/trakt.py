@@ -1,25 +1,136 @@
 from ..metadata import *
 import json
 import datetime
-
+import yaml
+import time
 
 class Trakt(Metadata):
 
-    baseUrl = "https://api.trakt.tv/"
+    baseUrl = "https://api-v2launch.trakt.tv/"
     url = {
-        "episode": baseUrl + "show/episode/summary.json/",
-        "seasons": baseUrl + "show/seasons.json/",
+        "token": baseUrl + "oauth/token",
+        "episode": baseUrl + "shows/{show}/seasons/{season}/episodes/{episode}?extended=full",
+        "seasons": baseUrl + "shows/{show}/seasons?extended=full,images",
         "season": baseUrl + "show/season.json/",
         "watchlist": baseUrl + "show/episode/watchlist/",
         "movie": baseUrl + "movie/summary.json/"
     }
 
     def __init__(self, config):
-        if not "trakt" in config:
-            raise Exception("Need trakt config key, username sha1 of password")
+        required = ['client_id', 'client_secret', 'redirect_uri', 'pin_url']
+        if not 'trakt' in config:
+            raise Exception("Need trakt config client_id, client_secret and redirect_uri")
 
         self.trakt = config['trakt']
-        super(Trakt, self).__init__(config)
+
+        for require in required:
+            if not require in self.trakt:
+                raise Exception("Need " + require + " in trakt config")
+
+        super(Trakt, self).__init__(config, {
+            "Content-type": "application/json",
+            "trakt-api-key": self.trakt['client_id'],
+            "trakt-api-version": "2"
+        })
+
+        print self.trakt
+        
+        self.loadTraktTokens()
+        
+        if not self.isAuthenticated():
+            self.authenticate()
+
+        if self.needsToRefreshToken():
+            print "refreshing token..."
+            self.refreshAccessToken()
+
+    def needsToRefreshToken(self):
+        return self.trakt['expires_at'] < time.time()
+
+    def loadTraktTokens(self):
+        try:
+            f = open('.trakt.yaml')
+            tokens = yaml.load(f)
+            f.close()
+
+            self.trakt['access_token'] = tokens['access_token']
+            self.trakt['refresh_token'] = tokens['refresh_token']
+            self.trakt['expires_at'] = tokens['expires_at']
+
+        except IOError:
+            pass
+
+    def saveTraktTokens(self):
+        try:
+            f = open('.trakt.yaml', 'w+')
+            tokens = {
+                "access_token": self.trakt["access_token"],
+                "refresh_token": self.trakt["refresh_token"],
+                'expires_at': self.trakt['expires_at']
+            }
+            f.write(yaml.dump(tokens))
+            f.close()
+        except IOError:
+            print "Couldn't save trakt tokens"
+
+
+    def isAuthenticated(self):
+        print self.trakt
+        return "access_token" in self.trakt or "refresh_token" in self.trakt
+
+    def authenticate(self):
+        print "Open " + self.trakt['pin_url']
+        pin = raw_input("Enter 8 digit pin:")
+        self.getAccessToken(pin)
+
+    def getAccessToken(self, pin):
+        url = self.constructUrl("token")
+        body = {
+            "code": pin,
+            "client_id": self.trakt["client_id"],
+            "client_secret": self.trakt["client_secret"],
+            "redirect_uri": self.trakt["redirect_uri"],
+            "grant_type": "authorization_code"
+        }
+        print url
+        print body
+        resp, content = self.httprequest(url, "POST", body)
+        
+        content = json.loads(content)
+        print content
+        if not "access_token" in content or not "refresh_token" in content:
+            print "something wrong..."
+
+        self.trakt['access_token'] = content['access_token']
+        self.trakt['refresh_token'] = content['refresh_token']
+        self.trakt['expires_at'] = content['created_at'] + content['expires_in']
+
+        self.saveTraktTokens()
+
+    def refreshAccessToken(self):
+        url = self.constructUrl("token")
+        body = {
+            "refresh_token": self.trakt["refresh_token"],
+            "client_id": self.trakt["client_id"],
+            "client_secret": self.trakt["client_secret"],
+            "redirect_uri": self.trakt["redirect_uri"],
+            "grant_type": "refresh_token"
+        }
+
+        print url, body
+        resp, content = self.httprequest(url, "POST", body)
+
+        content = json.loads(content)
+        print content
+        if not "access_token" in content or not "refresh_token" in content:
+            print "something wrong..."
+
+        self.trakt["access_token"] = content["access_token"]
+        self.trakt["refresh_token"] = content["refresh_token"]
+
+        self.saveTraktTokens()
+        
+
 
     def getInfo(self, data):
         if self.config['type'] == "TV":
@@ -43,39 +154,37 @@ class Trakt(Metadata):
             "genre": ""
         }
 
-        url = self.constructUrl("episode", [name, season, episode])
+        url = self.constructUrl("episode", {"show": name, "season": season, "episode": episode})
         resp, content = self.httprequest(url, "GET")
         print url
+        
         content = json.loads(content)
+        
         if not "status" in content:
-            show = content['show']
-            episode = content['episode']
-            serie['poster'] = show['images']['poster']
-            serie['desc'] = episode['overview'].replace('"', "'")
-            serie['epName'] = episode['title'].replace('"', "'")
-            serie['year'] = datetime.date.fromtimestamp(episode['first_aired']).isoformat()
-            if "genres" in show:
-                genres = show['genres']
-                serie['genre'] = genres[0]
-                genres.pop(0)
-                serie['comments'] = ", ".join(genres)
 
-            serie['id'] = episode['tvdb_id']
+            serie['season'] = content['season']
+            serie['episode'] = content['number']
+            serie['desc'] = content['overview'].replace('"', "'")
+            serie['epName'] = content['title'].replace('"', "'")
+        
+            serie['year'] = datetime.datetime.strptime(content['first_aired'], "%Y-%m-%dT%H:%M:%S.%fZ").isoformat()
+            
+            serie['id'] = content['ids']['tvdb']
 
-            url = self.constructUrl("seasons", [name])
-            resp, content = self.httprequest(url, "GET")
-            print url
-            print content
+            # Get the season specific stuff, genres, poster, nrOfEpisodes
+            url = self.constructUrl("seasons", {"show": name})
+            resp, content = self.httprequest(url, "GET")            
             content = json.loads(content)
-
+            
             if not "status" in content:
                 for s in content:
-                    if int(serie['season']) == int(s['season']):
-                        serie['nrOfEpisodes'] = s['episodes']
+                    print s
+                    if int(serie['season']) == int(s['number']):
+                        serie['poster'] = s['images']['poster']['full']
+                        serie['nrOfEpisodes'] = s['episode_count']
                         break
         else:
             print "no data"
-        print url
 
         return serie
 
@@ -89,16 +198,17 @@ class Trakt(Metadata):
 
     def getArtwork(self, serie, season):
         name = serie['name'] if "name" in serie else serie
-        url = self.constructUrl("seasons", [name])
+        url = self.constructUrl("seasons", {"show": name})
         print url
         image = False
         resp, content = self.httprequest(url, "GET")
         content = json.loads(content)
         if not "status" in content:
             for s in content:
-                if int(s['season']) == int(season):
-                    image = s['images']['poster']
-
+                if int(s['number']) == int(season):
+                    image = s['images']['poster']['full']
+                    break
+        
         if image:
             resp, content = self.httprequest(image, "GET")
             if "status" in resp and resp['status'] == '200':
@@ -107,9 +217,10 @@ class Trakt(Metadata):
                     f.write(content)
 
 
-    def constructUrl(self, type, params):
-        url = self.url[type] + self.trakt['key'] + "/"
-        for param in params:
-            url += param + "/"
-
+    def constructUrl(self, type, params={}):
+        url = self.url[type]
+        print url
+        for key, value in params.items():
+            url = url.replace("{"+key+"}", value)
+        print url
         return url.replace(" ", "-")

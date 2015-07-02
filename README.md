@@ -19,6 +19,13 @@ Parses TV Shows. Mainly for converting to iTunes friendly format, adding metadat
 - `pip install -r requirements.txt`
 - `cp config-sample.yaml config.yaml` and edit it to your liking.
 
+
+### Trakt.tv
+If you use the [trakt.tv](http://trakt.tv) you need to [create an app](http://trakt.tv/oauth/applications)
+that uses PIN authentication.
+
+Then add your client id, client secret, pin url and redirect uri to the config
+
 --
 
 ### Requirements
