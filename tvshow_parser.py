@@ -3,7 +3,7 @@ import getopt
 import yaml
 import os
 import signal
-from modules import file, serie, movie
+from modules import config, file, serie, movie
 
 __app_name__ = "tvshow_parser"
 __version__ = 0.5
@@ -96,23 +96,7 @@ def parseArgs(argv, config):
         sys.exit(2)
 
     return config
-
-
-def loadConfig(file):
-    global config
-    try:
-        f = open(file)
-        config = yaml.load(f)
-        f.close()
-    except IOError:
-        print "Couldn't find a config.yaml file. Have you created one?"
-        sys.exit(0)
-        cleanup()
-        return False
-
-    return config
-
-
+    
 def usage():
     print "tvshow-parser"
 
@@ -233,14 +217,18 @@ def main(argv):
     # Load config file
     root = os.path.dirname(argv[0])
     configFile = os.path.join(root, "config.yaml")
-    config = loadConfig(configFile)
+    settings = config.Config()
+    if not settings.loadFromFile(configFile):
+        sys.exit(0)
+        cleanup();
+    
     # Parse arguments
-    parseArgs(argv[1:], config)
+    parseArgs(argv[1:], settings)
 
     # Load modules for metadata, addTo and subtitle
-    modules = loadModules(config)
+    modules = loadModules(settings)
 
-    convert(config, modules)
+    convert(settings, modules)
 
 if __name__ == "__main__":
     main(sys.argv)
