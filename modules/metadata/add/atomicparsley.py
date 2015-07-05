@@ -33,17 +33,19 @@ class Atomicparsley(Metadata):
         print metadata.keys()
 
         print "\n\n"
-	comment = ", ".join(metadata['comments']) if not isinstance(metadata['comments'], basestring) else metadata['comments']
+        comment = ", ".join(metadata['comments']) if not isinstance(metadata['comments'], basestring) else metadata['comments']
         comment = comment + "\n" + os.path.basename(self.config['file']['name'])
+        epID = '%d%s' %(metadata['season'], str(metadata['episode']).rjust(2, '0'))
+        
         tags = {
             "kind": " --stik '%s'" %('TV Show' if self.config['type'] == "TV" else "Movie"),
             "name": " --artist '%(data)s' --TVShowName '%(data)s'" %{"data": metadata['name']},
-            "season": " --TVSeasonNum " + metadata['season'],
-            "episode": " --TVEpisodeNum " + metadata['episode'],
+            "season": " --TVSeasonNum %d" %(metadata['season']),
+            "episode": " --TVEpisodeNum %d" %(metadata['episode']),
             "title": ' --title "%s"' %(metadata['epName']),
-            "epID": " --TVEpisode " + metadata['season'] + metadata['episode'].rjust(2, '0'),
-            "album": " --album '%s, Season %s'" %(metadata['name'], metadata['season']),
-            "track": " --tracknum %s/%s" %(metadata['episode'], metadata['nrOfEpisodes']),
+            "epID": " --TVEpisode '%s'" %(epID),
+            "album": " --album '%s, Season %d'" %(metadata['name'], metadata['season']),
+            "track": " --tracknum %d/%d" %(metadata['episode'], metadata['nrOfEpisodes']),
             "year": " --year '%s'" %(metadata['year']),
             "desc": ' --description "%(data)s" --longdesc "%(data)s"' %{"data": metadata['desc']},
             "genre": " --genre '%s'" %(metadata['genre']),
