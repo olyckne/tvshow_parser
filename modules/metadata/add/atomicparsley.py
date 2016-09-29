@@ -43,20 +43,21 @@ class Atomicparsley(Metadata):
             "season": " --TVSeasonNum %d" %(metadata['season']),
             "episode": " --TVEpisodeNum %d" %(metadata['episode']),
             "title": ' --title "%s"' %(metadata['epName']),
-            "epID": " --TVEpisode '%s'" %(epID),
+            "epID": " --TVEpisode '%s'" %(metadata['id']),
             "album": " --album '%s, Season %d'" %(metadata['name'], metadata['season']),
             "track": " --tracknum %d/%d" %(metadata['episode'], metadata['nrOfEpisodes']),
             "year": " --year '%s'" %(metadata['year']),
-            "desc": ' --description "%(data)s" --longdesc "%(data)s"' %{"data": metadata['desc']},
+            "desc": ' --description "%(data)s"' %{"data": metadata['desc']},
             "genre": " --genre '%s'" %(metadata['genre']),
-            "comment": " --comment '%s'" %(comment),
-            "hd": " --hdvideo %s" % metadata['hd']
+            "comment": " --comment '%s'" %(comment)
         }
         if os.path.isfile('art.jpg'):
             tags['art'] = " --artwork art.jpg"
 
         for tag in tags:
             cmd = cmd + tags[tag]
+
+        cmd = cmd + " --overWrite"
 
         p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE)
 
