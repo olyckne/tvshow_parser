@@ -31,7 +31,7 @@ class Ffmpeg(Convert):
         if not self.type['audio']['type'] in ["m4a", "aac"]:
             tracks.insert(1, self.convertAudio(tracks[1]['file'], to='m4a'))
         if not self.type['video']['type'] in ["h264", "m4v"]:
-            tracks.insert(0, self.convertVideo(tracks[1]['file'], to='m4v'))
+            tracks.insert(0, self.convertVideo(tracks[0]['file'], to='m4v'))
 
         if self.config['actions']['sub'] and "sub" in self.config and self.config['sub']:
             print self.config['sub'] 
@@ -116,7 +116,7 @@ class Ffmpeg(Convert):
 
         if not file:
             file = self.config['temp'] if "temp" in self.config else self.config['file']
-            file = os.path.join(file['path'], 'audio*')
+            file = os.path.join(file['path'], 'video*')
         print file
 
         outFile = "video." + to
