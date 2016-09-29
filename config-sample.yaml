@@ -37,6 +37,11 @@ trakt:
   pin_url: 'https://trakt.tv/pin/xxxx'
   addToWatchlist: false
 
+# Slack info
+slack:
+  webhook: https://hooks.slack.com/services/xxx/yyy/zzz
+  channel: #general
+
 # itunes settings
 # if addDirect is set to tru it uses applescript to add it to iTunes
 # else it moves the file to the path in path
