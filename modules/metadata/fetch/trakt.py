@@ -199,7 +199,7 @@ class Trakt(Metadata):
         if not "status" in content:
             print content
 
-    def getArtwork(self, serie, season):
+    def getArtworkLink(self, serie, season):
         name = serie['name'] if "name" in serie else serie
         url = self.constructUrl("seasons", {"show": name})
         print url
@@ -211,7 +211,10 @@ class Trakt(Metadata):
                 if int(s['number']) == int(season):
                     image = s['images']['poster']['full']
                     break
-        
+        return image
+
+    def getArtwork(self, serie, season):
+        image = self.getArtworkLink(serie, season)
         if image:
             resp, content = self.httprequest(image, "GET")
             if "status" in resp and resp['status'] == '200':

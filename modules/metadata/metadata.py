@@ -11,6 +11,9 @@ class Metadata(object):
     def getEpisodeInfo(self, serie, season, episode):
         return False
 
+    def getArtworkLink(self, serie,season):
+        return False
+
     def getArtwork(self, serie, season):
         return False
 
