@@ -111,6 +111,12 @@ def loadModules(config):
     res = {}
     for module in config['modules']:
         path = module.replace("_", ".")
+        # If we dont want to add metadata, dont initalize those modules
+        # mainly because that will authenticate with trakt
+        # and 99% of the time I use --no-metadata it's because Trakt is down
+        # and that means the script will fail and exit
+        if path == "metadata.fetch" and not config["actions"]["metadata"]:
+            continue
         try:
             exec("from modules." + path + " import " + config['modules'][module])
             m = sys.modules['modules.' + path + '.' + config['modules'][module]]
