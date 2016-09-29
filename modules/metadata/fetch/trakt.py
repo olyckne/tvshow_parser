@@ -160,19 +160,19 @@ class Trakt(Metadata):
         url = self.constructUrl("episode", {"show": name, "season": season, "episode": episode})
         resp, content = self.httprequest(url, "GET")
         print url
-        
+        print content
         content = json.loads(content)
         
         if not "status" in content:
 
             serie['season'] = content['season']
             serie['episode'] = content['number']
-            serie['desc'] = content['overview'].replace('"', "'")
-            serie['epName'] = content['title'].replace('"', "'")
+            serie['desc'] = content['overview'].replace('"', "'") if content['overview'] else ''
+            serie['epName'] = content['title'].replace('"', "'") if content['title'] else ''
         
             serie['year'] = datetime.datetime.strptime(content['first_aired'], "%Y-%m-%dT%H:%M:%S.%fZ").isoformat()
             
-            serie['id'] = content['ids']['tvdb']
+            serie['id'] = content['ids']['trakt']
 
             # Get the season specific stuff, genres, poster, nrOfEpisodes
             url = self.constructUrl("seasons", {"show": name})
@@ -223,10 +223,11 @@ class Trakt(Metadata):
                     f.write(content)
 
 
+
     def constructUrl(self, type, params={}):
         url = self.url[type]
         print url
         for key, value in params.items():
             url = url.replace("{"+key+"}", value)
         print url
-        return url.replace(" ", "-")
+        return url.replace(" ", "-").lower()
