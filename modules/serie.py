@@ -65,7 +65,7 @@ class Serie(object):
             self.hd = True if metadata["hd"].lower() in ["true", "1", "yes"] else False
 
     def isNameInConfig(self, name):
-        return "metadata" in self.config and name in self.config['metadata']
+        return "metadata" in self.config and name.lower() in map(str.lower, self.config["metadata"])
 
     def getNameFromConfig(self, name):
-        return self.config['metadata'][name] if self.isNameInConfig(name) else name
+        return self.config['metadata'][name.lower()] if self.isNameInConfig(name) else name
