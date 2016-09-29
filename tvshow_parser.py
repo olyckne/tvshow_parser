@@ -47,10 +47,7 @@ def parseArgs(argv, config):
                 usage()
                 sys.exit()
             elif opt == "-c":
-                config = loadConfig(arg)
-                if not config:
-                    print "Couldn't read config file " + str(arg)
-                    sys.exit(2)
+                config["config_file"] = arg
             elif opt == "--type":
                 config['type'] = arg.upper()
             elif opt == "--meta-module":
@@ -220,16 +217,20 @@ def convert(config, modules):
 
 
 def main(argv):
-    # Load config file
-    root = os.path.dirname(argv[0])
-    configFile = os.path.join(root, "config.yaml")
     settings = config.Config()
+
+    # Parse arguments
+    settings = parseArgs(argv[1:], settings)
+
+    # Load config file
+    root = os.path.dirname(os.path.realpath(__file__))
+    configFile = os.path.join(root, settings["config_file"] or "config.yaml")
     if not settings.loadFromFile(configFile):
         sys.exit(0)
         cleanup();
-    
-    # Parse arguments
-    parseArgs(argv[1:], settings)
+
+    settings['root'] = root
+    print(settings.config)
 
     # Load modules for metadata, addTo and subtitle
     modules = loadModules(settings)

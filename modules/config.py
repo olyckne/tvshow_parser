@@ -2,15 +2,28 @@ import yaml
 
 class Config():
 
+    def __init__(self):
+        self.config = {
+            "actions": {
+                "metadata": True,
+                "convert": True,
+                "sub": True
+            }
+        }
+
     def loadFromFile(self, file):
         self.file = file
         try:
             f = open(file)
-            self.config = yaml.load(f)
+            configFromFile = yaml.load(f)
             f.close()
         except IOError:
             print "Couldn't find a config file."
             return False
+        configFromFile.update(self.config)
+        self.config = configFromFile
+
+        print self.config
 
         return True
 
@@ -34,7 +47,7 @@ class Config():
         return self.config[key]
 
     def __contains__(self, key):
-        return key in self.config
+        return key.lower() in map(str.lower, self.config)
 
     def __getitem__(self, key):
         return self.get(key)
