@@ -244,7 +244,7 @@ def main(argv):
 
     # Load config file
     root = os.path.dirname(os.path.realpath(__file__))
-    configFile = os.path.join(root, settings["config_file"] or "config.yaml")
+    configFile = os.path.join(root, settings["config_file"] if "config_file" in settings else "config.yaml")
     if not settings.loadFromFile(configFile):
         sys.exit(0)
         cleanup();
