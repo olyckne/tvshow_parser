@@ -33,7 +33,7 @@ class Itunes(Add):
     def getDirectCmd(self, file):
         return '/usr/bin/osascript -e "tell application \\"iTunes\\" to add POSIX file \\"' + file + '\\""'
 
-    def moveToPath(file):
+    def moveToPath(self, file):
         if "path" in self.config['itunes']:
             path = self.config['itunes']['path']
         if path[0] == '~':
@@ -41,8 +41,14 @@ class Itunes(Add):
         if os.path.exists(path):
             if os.path.isfile(file):
                 try:
-                    shutil.copy(file, path)
-                except EnvironmentError:
+                    parentPath = os.path.dirname(os.path.dirname(path+'/'))
+                    print parentPath
+                    print path
+                    print file
+                    shutil.copy(file, parentPath)
+                    shutil.move(os.path.join(parentPath, os.path.basename(file)), path)
+                except EnvironmentError as e:
+                    raise e
                     return False
                 else:
                     return True
