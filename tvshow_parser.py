@@ -1,9 +1,12 @@
+#! /usr/bin/env python
+
 import sys
 import getopt
 import yaml
 import os
 import signal
 from modules import config, file, serie, movie
+import traceback, os.path
 
 __app_name__ = "tvshow_parser"
 __version__ = 0.5
@@ -41,6 +44,8 @@ def parseArgs(argv, config):
 
     config['file'] = {'metadata': {}}
 
+    print config.config
+
     try:
         for opt, arg in opts:
             if opt in ("-h", "--help"):
@@ -77,7 +82,8 @@ def parseArgs(argv, config):
             elif opt == "--no-metadata":
                 config['actions']['metadata'] = False
 
-    except:
+    except Exception as e:
+        print e
         print "something wrong with config..."
         sys.exit(2)
 
@@ -114,6 +120,8 @@ def loadModules(config):
         # and that means the script will fail and exit
         if path == "metadata.fetch" and not config["actions"]["metadata"]:
             continue
+        if path == "subtitle" and not config["actions"]["sub"]:
+            continue
         try:
             exec("from modules." + path + " import " + config['modules'][module])
             m = sys.modules['modules.' + path + '.' + config['modules'][module]]
@@ -138,6 +146,7 @@ def convert(config, modules):
     file_handler = file.File(config)
 
     print config['file']
+
 
     # If file isn't a video, try to find one (or more)
     if not os.path.isfile(os.path.join(config['file']['path'], config['file']['name'])):
@@ -173,6 +182,7 @@ def convert(config, modules):
         file_handler.moveToTemp()
         file_handler.cdToTemp()
 
+        artworkLink = ""
         if config['actions']['metadata']:
             try:
                 metadata = modules['metadata_fetch'].getInfo({
@@ -183,9 +193,11 @@ def convert(config, modules):
                                                    })
                 print metadata
                 modules['metadata_fetch'].getArtwork(media_handler.name, media_handler.season)
-            except:
+                artworkLink = modules['metadata_fetch'].getArtworkLink(media_handler.name, media_handler.season)
+            except Exception, e:
                 print "Couldn't fetch metadata... exiting..."
                 file_handler.removeTemp()
+                modules['notification'].sendNotification(type="Error", title="Error: Couldn't fetch metadata: " + str(e), description=config['file']['name'])
                 sys.exit(1)
         if config['actions']['sub']:
             try:
@@ -196,24 +208,32 @@ def convert(config, modules):
         if config['actions']['convert']:
             try:
                 modules['convert'].convert()
-            except:
+            except Exception, e:
                 print "Oh Oh. Something wrong!"
                 file_handler.removeTemp()
+                e = sys.exc_info()[0]
+                modules['notification'].sendNotification(type="Error", title="Error: " + str(e), description=config['file']['name'])
                 sys.exit(1)
 
         if config['actions']['metadata']:
             try:
                 modules['metadata_add'].addMetadata(metadata)
-            except:
+            except Exception, e:
                 print "Couldn't add metdata. Exiting..."
-                file_hander.removeTemp()
+                file_handler.removeTemp()
+                modules['notification'].sendNotification(type="Error", title="Error: Couldn't add metadata: " + str(e), description=config['file']['name'])
                 sys.exit(1)
         # convert()
         # addTags()
         # optimize()
-        if modules['add'].add(os.path.join(config['temp']['path'], config['temp']['name'])):
+        try :
+            if modules['add'].add(os.path.join(config['temp']['path'], config['temp']['name'])):
+                file_handler.removeTemp()
+                modules['notification'].sendNotification(description=config['file']['name'], image=artworkLink)
+        except Exception, e:
             file_handler.removeTemp()
-            modules['notification'].sendNotification(description=config['file']['name'])
+            modules['notification'].sendNotification(type="Error", title="Error: " + str(e), description=config['file']['name'], image=artworkLink)
+            sys.exit(1)
 
 
 def main(argv):
