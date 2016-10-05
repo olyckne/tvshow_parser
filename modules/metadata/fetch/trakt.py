@@ -51,8 +51,8 @@ class Trakt(Metadata):
     def loadTraktTokens(self):
         try:
             print self.config.config
-            print os.path.join(self.config['root'], '.trakt.yaml')
-            f = open(os.path.join(self.config['root'], '.trakt.yaml'))
+            print os.path.join(self.config['config_root'], '.trakt.yaml')
+            f = open(os.path.join(self.config['config_root'], '.trakt.yaml'))
             tokens = yaml.load(f)
             f.close()
 
@@ -65,7 +65,7 @@ class Trakt(Metadata):
 
     def saveTraktTokens(self):
         try:
-            f = open(os.path.join(self.config['root'], '.trakt.yaml'), 'w+')
+            f = open(os.path.join(self.config['config_root'], '.trakt.yaml'), 'w+')
             tokens = {
                 "access_token": self.trakt["access_token"],
                 "refresh_token": self.trakt["refresh_token"],

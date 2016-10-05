@@ -245,11 +245,14 @@ def main(argv):
     # Load config file
     root = os.path.dirname(os.path.realpath(__file__))
     configFile = os.path.join(root, settings["config_file"] if "config_file" in settings else "config.yaml")
+    settings['config_file'] = configFile
     if not settings.loadFromFile(configFile):
         sys.exit(0)
         cleanup();
 
     settings['root'] = root
+    settings['config_root'] = os.path.dirname(os.path.realpath(settings['config_file']))
+
     print(settings.config)
 
     # Load modules for metadata, addTo and subtitle

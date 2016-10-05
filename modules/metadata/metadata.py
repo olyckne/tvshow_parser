@@ -1,5 +1,6 @@
 import httplib2
 import json
+import os
 
 
 class Metadata(object):
@@ -18,7 +19,10 @@ class Metadata(object):
         return False
 
     def httprequest(self, url, type="GET", data={}, headers={}):
-        cacheDir = self.config['temp']['path'] + "/.cache" if "temp" in self.config else ".cache"
+        if "temp" in self.config:
+            cacheDir = os.path.join(self.config['temp']['path'], '.cache')
+        else:
+            cachedir = os.path.join(self.config['config_root'], '.cache')
         h = httplib2.Http(cacheDir)
         headers = dict(self.headers.items() + headers.items())
         
